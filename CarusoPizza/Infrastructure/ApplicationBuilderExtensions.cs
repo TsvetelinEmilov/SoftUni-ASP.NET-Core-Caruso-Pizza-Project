@@ -1,4 +1,4 @@
-﻿namespace CarRentingSystem.Infrastructure
+﻿namespace CarusoPizza.Infrastructure
 {
     using System.Linq;
     using CarusoPizza.Data;

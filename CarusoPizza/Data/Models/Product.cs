@@ -4,7 +4,7 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    using static DataConstants;
+    using static DataConstants.Product;
 
     public class Product
     {
@@ -31,7 +31,7 @@
 
         public Category Category { get; init; }
 
-        public IEnumerable<ProductsToppings> Ingredients { get; init; } = new List<ProductsToppings>();
+        public IEnumerable<ProductsToppings> Toppings { get; init; } = new List<ProductsToppings>();
 
     }
 }
