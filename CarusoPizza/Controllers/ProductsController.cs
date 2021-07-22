@@ -18,7 +18,7 @@
         public IActionResult Add()
             => View(new AddProductFormModel
             {
-                Categories = this.GetProductCategories()
+                Categories = this.GetProductCategories()              
             });
 
         [HttpPost]
@@ -61,6 +61,7 @@
                 Name = p.Name
             })
             .ToList();
+
         
     }
 }

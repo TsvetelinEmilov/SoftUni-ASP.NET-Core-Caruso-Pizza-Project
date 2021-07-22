@@ -14,16 +14,13 @@
         [MaxLength(ProductNameMaxLength)]
         public string Name { get; set; }
 
-        public int Weight { get; set; }
-
+        public int? Weight { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
-        [Required]
         public string ImageUrl { get; set; }
 
-        [Required]
         [MaxLength(ProductDescriptionMaxLength)]
         public string Description { get; set; }
 

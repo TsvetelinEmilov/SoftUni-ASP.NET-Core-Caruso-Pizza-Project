@@ -4,16 +4,14 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CarusoPizza.Data.Migrations
+namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    [Migration("20210721161737_CategoryProductProductsToppingsToppingTables")]
-    partial class CategoryProductProductsToppingsToppingTables
+    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,12 +47,10 @@ namespace CarusoPizza.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -65,7 +61,7 @@ namespace CarusoPizza.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Weight")
+                    b.Property<int?>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -322,7 +318,7 @@ namespace CarusoPizza.Data.Migrations
             modelBuilder.Entity("CarusoPizza.Data.Models.ProductsToppings", b =>
                 {
                     b.HasOne("CarusoPizza.Data.Models.Product", "Product")
-                        .WithMany("Ingredients")
+                        .WithMany("Toppings")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -396,7 +392,7 @@ namespace CarusoPizza.Data.Migrations
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Product", b =>
                 {
-                    b.Navigation("Ingredients");
+                    b.Navigation("Toppings");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Topping", b =>

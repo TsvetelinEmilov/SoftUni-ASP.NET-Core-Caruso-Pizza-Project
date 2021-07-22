@@ -32,14 +32,15 @@
 
             data.Categories.AddRange(new[]
             {
-                new Category { Name = "Pizzas" },
-                new Category { Name = "Subs" },
-                new Category { Name = "Drinks" },
-                new Category { Name = "Sauces" },
+                new Category { Name = "Pizza" },
+                new Category { Name = "Sub" },
+                new Category { Name = "Drink" },
+                new Category { Name = "Sauce" },
         
             });
 
             data.SaveChanges();
         }
+        
     }
 }
