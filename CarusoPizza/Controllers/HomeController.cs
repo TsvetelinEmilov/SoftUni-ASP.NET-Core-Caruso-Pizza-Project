@@ -23,6 +23,14 @@ namespace CarusoPizza.Controllers
             return View();
         }
 
+<<<<<<< HEAD
+=======
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+>>>>>>> 7435b166c21815d8907c4851c416ba5d97e194da
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
