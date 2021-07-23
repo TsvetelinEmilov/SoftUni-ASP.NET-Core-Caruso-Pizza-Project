@@ -15,6 +15,23 @@
         public ProductsController(CarusoPizzaDbContext data) 
             => this.data = data;
 
+        public IActionResult All()
+        {
+            var products = this.data
+                .Products
+                .Select(p => new ProductsListingModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    PizzaSize = p.PizzaSize.ToString(),
+                    ImageUrl = p.ImageUrl,
+                    Description = p.Description
+                })
+                .ToList();
+            return View(products);
+        }
+
         public IActionResult Add()
             => View(new AddProductFormModel
             {
