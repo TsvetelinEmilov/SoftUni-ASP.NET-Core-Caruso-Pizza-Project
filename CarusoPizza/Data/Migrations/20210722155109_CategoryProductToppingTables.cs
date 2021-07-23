@@ -1,8 +1,8 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace CarusoPizza.Migrations
+﻿namespace CarusoPizza.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class CategoryProductToppingTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

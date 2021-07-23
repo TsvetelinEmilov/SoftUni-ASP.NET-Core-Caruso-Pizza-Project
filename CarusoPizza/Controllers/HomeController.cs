@@ -1,11 +1,7 @@
 ﻿using CarusoPizza.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CarusoPizza.Controllers
 {
@@ -23,14 +19,11 @@ namespace CarusoPizza.Controllers
             return View();
         }
 
-<<<<<<< HEAD
-=======
         public IActionResult Privacy()
         {
             return View();
         }
 
->>>>>>> 7435b166c21815d8907c4851c416ba5d97e194da
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

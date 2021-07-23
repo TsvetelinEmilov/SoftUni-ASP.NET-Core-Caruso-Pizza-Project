@@ -7,7 +7,6 @@
     using CarusoPizza.Models.Product;
     using Microsoft.AspNetCore.Mvc;
 
-
     public class ProductsController : Controller
     {
         private readonly CarusoPizzaDbContext data;
