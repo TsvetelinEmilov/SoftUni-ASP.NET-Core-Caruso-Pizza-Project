@@ -11,30 +11,13 @@
     {
         private readonly CarusoPizzaDbContext data;
 
-        public ProductsController(CarusoPizzaDbContext data) 
+        public ProductsController(CarusoPizzaDbContext data)
             => this.data = data;
-
-        public IActionResult All()
-        {
-            var products = this.data
-                .Products
-                .Select(p => new ProductsListingModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    PizzaSize = p.PizzaSize.ToString(),
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description
-                })
-                .ToList();
-            return View(products);
-        }
 
         public IActionResult Add()
             => View(new AddProductFormModel
             {
-                Categories = this.GetProductCategories()              
+                Categories = this.GetProductCategories()
             });
 
         [HttpPost]
@@ -67,6 +50,41 @@
 
             return this.RedirectToAction("Index", "Home");
         }
+
+        public IActionResult All()
+        {
+            var products = this.data
+                .Products
+                .Select(p => new ProductsListingModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    PizzaSize = p.PizzaSize.ToString(),
+                    ImageUrl = p.ImageUrl,
+                    Description = p.Description
+                })
+                .ToList();
+            return View(products);
+        }
+        public IActionResult Order(int productId)
+        {
+            var product = this.data.Products
+                .First(p => p.Id == productId);
+
+            return this.View(product);
+        }
+
+
+        private IEnumerable<ProductToppingViewModel> GetProductToppings()
+            => this.data
+            .Toppings
+            .Select(p => new ProductToppingViewModel
+            {
+                Id = p.Id,
+                Name = p.Name
+            })
+            .ToList();
 
         private IEnumerable<ProductCategoryViewModel> GetProductCategories()
             => this.data

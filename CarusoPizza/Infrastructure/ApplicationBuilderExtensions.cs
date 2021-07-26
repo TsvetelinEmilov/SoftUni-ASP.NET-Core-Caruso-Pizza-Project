@@ -20,6 +20,8 @@
 
             SeedCategories(data);
 
+            SeedToppings(data);
+
             return app;
         }
 
@@ -40,6 +42,79 @@
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedToppings(CarusoPizzaDbContext data)
+        {
+            if (data.Toppings.Any())
+            {
+                return;
+            }
+
+            data.Toppings.AddRange(new[]
+            {
+                new Topping 
+                {
+                    Name = "fresh mozzarella",
+                    Price = 1.50M
+                },
+                 new Topping
+                {
+                    Name = "prosciutoo cotto",
+                    Price = 1.50M
+                },
+                new Topping
+                {
+                    Name = "cheddar cheese",
+                    Price = 1.50M
+                },
+                new Topping
+                {
+                    Name = "mozzarella",
+                    Price = 1.50M
+                },
+                new Topping
+                {
+                    Name = "smoked melted cheese",
+                    Price = 1.50M
+                },
+                new Topping
+                {
+                    Name = "spicy pepperoni",
+                    Price = 1.50M
+                },
+                new Topping
+                {
+                    Name = "salsiche",
+                    Price = 1.50M
+                },
+                new Topping
+                {
+                    Name = "red onion",
+                    Price = 1.00M
+                },
+                new Topping
+                {
+                    Name = "mushrooms",
+                    Price = 1.00M
+                },
+                new Topping
+                {
+                    Name = "green pepper",
+                    Price = 1.00M
+                },
+                new Topping
+                {
+                    Name = "jalapenos peppers",
+                    Price = 1.00M
+                },
+                new Topping
+                {
+                    Name = "cherry tomato",
+                    Price = 1.00M
+                }
+               
+            });
         }
         
     }

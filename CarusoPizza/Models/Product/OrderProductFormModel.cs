@@ -1,18 +1,17 @@
 ﻿namespace CarusoPizza.Models.Product
 {
+    using CarusoPizza.Data.Models.Enums;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Product;
-    public class AddProductFormModel
+    public class OrderProductFormModel
     {
         [Required]
         [StringLength(
             ProductNameMaxLength,
             MinimumLength = ProductNameMinLength)]
         public string Name { get; init; }
-
-        public int Weight { get; init; }
 
         [Range(ProductPriceMinValue, ProductPriceMaxValue)]
         public decimal Price { get; init; }
@@ -24,14 +23,17 @@
 
         [Required]
         [StringLength(
-            ProductDescriptionMaxLength,
-            MinimumLength = ProductDescriptionMinLength,
-            ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
+           ProductDescriptionMaxLength,
+           MinimumLength = ProductDescriptionMinLength,
+           ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
         public string Description { get; init; }
 
-        [Display(Name = "Category")]
-        public int CategoryId { get; init; }
+        public PizzaSize PizzaMediumSize { get; set; } = PizzaSize.Medium;
+        public PizzaSize PizzaLargeSize { get; set; } = PizzaSize.Large;
 
-        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
+        [Display(Name = "Toppings")]
+        public int ToppingId { get; init; }
+
+        public IEnumerable<ProductToppingViewModel> Toppings { get; set; }
     }
 }

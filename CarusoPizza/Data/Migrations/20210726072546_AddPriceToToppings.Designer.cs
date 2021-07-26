@@ -4,14 +4,16 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210726072546_AddPriceToToppings")]
+    partial class AddPriceToToppings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,7 +136,7 @@ namespace CarusoPizza.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int?>("PizzaSize")
@@ -439,7 +441,9 @@ namespace CarusoPizza.Migrations
 
                     b.HasOne("CarusoPizza.Data.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 
