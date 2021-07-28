@@ -12,7 +12,7 @@
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(ProductNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         public PizzaSize? PizzaSize { get; set; }
@@ -24,7 +24,7 @@
 
         public string ImageUrl { get; set; }
 
-        [MaxLength(ProductDescriptionMaxLength)]
+        [MaxLength(DescriptionMaxLength)]
         public string Description { get; set; }
 
         public int? OrderId { get; set; }

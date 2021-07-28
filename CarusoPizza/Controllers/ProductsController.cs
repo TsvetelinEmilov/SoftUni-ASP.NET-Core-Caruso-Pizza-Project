@@ -1,10 +1,11 @@
 ﻿namespace CarusoPizza.Controllers
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
-    using CarusoPizza.Models.Product;
+    using CarusoPizza.Models.Products;
     using Microsoft.AspNetCore.Mvc;
 
     public class ProductsController : Controller
@@ -51,10 +52,23 @@
             return this.RedirectToAction("Index", "Home");
         }
 
-        public IActionResult All()
+        public IActionResult All([FromQuery]AllProductsQueryModel query)
         {
-            var products = this.data
-                .Products
+            var productQuery = this.data.Products.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                productQuery = productQuery.Where(p =>
+                       p.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
+                       p.Description.ToLower().Contains(query.SearchTerm.ToLower()));
+            }
+
+            var totalProducts = productQuery.Count();
+
+            var products = productQuery
+                .OrderBy(p => p.Id)
+                .Skip((query.CurrentPage - 1) * AllProductsQueryModel.ProductsPerPage)
+                .Take(AllProductsQueryModel.ProductsPerPage)
                 .Select(p => new ProductsListingModel
                 {
                     Id = p.Id,
@@ -65,26 +79,12 @@
                     Description = p.Description
                 })
                 .ToList();
-            return View(products);
+
+            query.TotalProducts = totalProducts;
+            query.Products = products;
+
+            return View(query);
         }
-        public IActionResult Order(int productId)
-        {
-            var product = this.data.Products
-                .First(p => p.Id == productId);
-
-            return this.View(product);
-        }
-
-
-        private IEnumerable<ProductToppingViewModel> GetProductToppings()
-            => this.data
-            .Toppings
-            .Select(p => new ProductToppingViewModel
-            {
-                Id = p.Id,
-                Name = p.Name
-            })
-            .ToList();
 
         private IEnumerable<ProductCategoryViewModel> GetProductCategories()
             => this.data
@@ -95,7 +95,17 @@
                 Name = p.Name
             })
             .ToList();
+        private IEnumerable<ToppingViewModel> GetProductToppings()
+            => this.data
+            .Toppings
+            .Select(p => new ToppingViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price
+            })
+            .ToList();
 
-        
+
     }
 }

@@ -9,9 +9,9 @@
 
         public DateTime CreatedOn { get; set; }
 
-        public int CreatorId { get; set; }
+        public string CreatorId { get; set; }
 
-        public ApplicationUser Creator { get; init; }
+        public User Creator { get; init; }
 
         public IEnumerable<OrderProduct> Products { get; init; } = new List<OrderProduct>();
     }

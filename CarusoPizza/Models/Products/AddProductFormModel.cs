@@ -1,4 +1,4 @@
-﻿namespace CarusoPizza.Models.Product
+﻿namespace CarusoPizza.Models.Products
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -8,13 +8,13 @@
     {
         [Required]
         [StringLength(
-            ProductNameMaxLength,
-            MinimumLength = ProductNameMinLength)]
+            NameMaxLength,
+            MinimumLength = NameMinLength)]
         public string Name { get; init; }
 
         public int Weight { get; init; }
 
-        [Range(ProductPriceMinValue, ProductPriceMaxValue)]
+        [Range(PriceMinValue, PriceMaxValue)]
         public decimal Price { get; init; }
 
         [Display(Name = "Image URL")]
@@ -24,8 +24,8 @@
 
         [Required]
         [StringLength(
-            ProductDescriptionMaxLength,
-            MinimumLength = ProductDescriptionMinLength,
+            DescriptionMaxLength,
+            MinimumLength = DescriptionMinLength,
             ErrorMessage = "The field Description must be a string with a minimum length of {2}.")]
         public string Description { get; init; }
 

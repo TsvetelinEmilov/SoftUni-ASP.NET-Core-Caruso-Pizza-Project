@@ -1,6 +1,7 @@
 namespace CarusoPizza
 {
     using CarusoPizza.Data;
+    using CarusoPizza.Data.Models;
     using CarusoPizza.Infrastructure;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -29,13 +30,14 @@ namespace CarusoPizza
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>(options =>
+                .AddDefaultIdentity<User>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<CarusoPizzaDbContext>();
 
             services.AddControllersWithViews(options =>

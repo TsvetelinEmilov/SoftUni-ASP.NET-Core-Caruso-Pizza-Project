@@ -10,41 +10,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    [Migration("20210725162345_CategoryOrderProductToopingUserTables")]
-    partial class CategoryOrderProductToopingUserTables
+    [Migration("20210728085341_CategoryOrderProductToppingTables")]
+    partial class CategoryOrderProductToppingTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
+                .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CarusoPizza.Data.Models.ApplicationUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("ApplicationUsers");
-                });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Category", b =>
                 {
@@ -74,14 +49,11 @@ namespace CarusoPizza.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatorId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CreatorId1")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId1");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Orders");
                 });
@@ -136,7 +108,7 @@ namespace CarusoPizza.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int>("OrderId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int?>("PizzaSize")
@@ -183,7 +155,12 @@ namespace CarusoPizza.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -209,8 +186,13 @@ namespace CarusoPizza.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -393,20 +375,12 @@ namespace CarusoPizza.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("CarusoPizza.Data.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("CarusoPizza.Data.Models.ApplicationUser", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CarusoPizza.Data.Models.Order", b =>
                 {
-                    b.HasOne("CarusoPizza.Data.Models.ApplicationUser", "Creator")
+                    b.HasOne("CarusoPizza.Data.Models.User", "Creator")
                         .WithMany("Orders")
-                        .HasForeignKey("CreatorId1");
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Creator");
                 });
@@ -436,9 +410,7 @@ namespace CarusoPizza.Migrations
 
                     b.HasOne("CarusoPizza.Data.Models.Order", "Order")
                         .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OrderId");
 
                     b.Navigation("Category");
 
@@ -515,11 +487,6 @@ namespace CarusoPizza.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Orders");
-                });
-
             modelBuilder.Entity("CarusoPizza.Data.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -538,6 +505,11 @@ namespace CarusoPizza.Migrations
             modelBuilder.Entity("CarusoPizza.Data.Models.Topping", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("CarusoPizza.Data.Models.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

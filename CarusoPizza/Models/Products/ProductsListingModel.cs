@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace CarusoPizza.Models.Product
+﻿namespace CarusoPizza.Models.Products
 {
     public class ProductsListingModel
     {
@@ -13,8 +11,6 @@ namespace CarusoPizza.Models.Product
         public decimal Price { get; set; }
 
         public string ImageUrl { get; set; }
-
-        public IEnumerable<ProductToppingViewModel> Toppings { get; set; }
 
         public string Description { get; set; }
     }

@@ -17,8 +17,6 @@
 
         public DbSet<Topping> Toppings { get; init; }
 
-        public DbSet<ApplicationUser> ApplicationUsers { get; init; }
-
         public DbSet<Order> Orders { get; init; }
 
 
@@ -29,13 +27,6 @@
                 .HasOne(c => c.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(c => c.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder
-                .Entity<ApplicationUser>()
-                .HasOne<User>()
-                .WithOne()
-                .HasForeignKey<ApplicationUser>(au => au.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
