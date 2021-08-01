@@ -1,12 +1,12 @@
 ﻿namespace CarusoPizza.Data.Models
 {
-    public class ProductsToppings
+    public class OrderProductsToppings
     {
         public int Id { get; set; }
 
-        public int ProductId { get; set; }
+        public int OrderProductId { get; set; }
 
-        public Product Product { get; set; }
+        public OrderProduct Product { get; set; }
 
         public int ToppingId { get; set; }
 

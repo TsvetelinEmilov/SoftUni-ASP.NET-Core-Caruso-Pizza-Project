@@ -8,15 +8,17 @@
 
     public class Topping
     {
-        public int Id { get; set; }
+        public int Id { get; init; }
 
         [MaxLength(NameMaxLength)]
         [Required]
-        public string Name { get; set; }
+        public string Name { get; init; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal Price { get; set; }
+        public decimal Price { get; init; }
 
-        public IEnumerable<ProductsToppings> Products { get; set; }
+        public bool? IsOrdered { get; set; }
+
+        public IEnumerable<OrderProductsToppings> OrderProducts { get; set; }
     }
 }

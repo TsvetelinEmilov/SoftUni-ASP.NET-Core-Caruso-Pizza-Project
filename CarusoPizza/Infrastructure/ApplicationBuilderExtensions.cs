@@ -29,6 +29,8 @@
 
             SeedAdministrator(services);
 
+            SeedPizzaSizes(services);
+
             return app;
         }
 
@@ -57,6 +59,23 @@
                 new Category { Name = "Drink" },
                 new Category { Name = "Sauce" },
         
+            });
+
+            data.SaveChanges();
+        }
+        private static void SeedPizzaSizes(IServiceProvider services)
+        {
+            var data = services.GetRequiredService<CarusoPizzaDbContext>();
+
+            if (data.PizzaSizes.Any())
+            {
+                return;
+            }
+
+            data.PizzaSizes.AddRange(new[]
+            {
+                new PizzaSize { Size = "Medium - 30sm."},
+                new PizzaSize { Size = "Large - 40sm."}
             });
 
             data.SaveChanges();

@@ -1,6 +1,6 @@
-﻿namespace CarusoPizza.Models.Products
+﻿namespace CarusoPizza.Models.OrderProduct
 {
-    public class ProductsListingModel
+    public class ProductListingModel
     {
         public int Id { get; set; }
 

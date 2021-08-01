@@ -37,6 +37,11 @@
             public const int PasswordMinLength = 6;
         }
 
+        public class Basket
+        {
+            public const int CommentMaxLength = 40;
+        }
+
     }
 }
 

@@ -74,7 +74,6 @@
                     Id = p.Id,
                     Name = p.Name,
                     Price = p.Price,
-                    PizzaSize = p.PizzaSize.ToString(),
                     ImageUrl = p.ImageUrl,
                     Description = p.Description
                 })
@@ -95,17 +94,5 @@
                 Name = p.Name
             })
             .ToList();
-        private IEnumerable<ToppingViewModel> GetProductToppings()
-            => this.data
-            .Toppings
-            .Select(p => new ToppingViewModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Price = p.Price
-            })
-            .ToList();
-
-
     }
 }

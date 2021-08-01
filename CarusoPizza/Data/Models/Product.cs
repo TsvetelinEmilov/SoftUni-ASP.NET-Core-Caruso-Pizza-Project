@@ -1,7 +1,5 @@
 ﻿namespace CarusoPizza.Data.Models
 {
-    using CarusoPizza.Data.Models.Enums;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,8 +12,6 @@
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
-
-        public PizzaSize? PizzaSize { get; set; }
 
         public int? Weight { get; set; }
 
@@ -34,8 +30,6 @@
         public int CategoryId { get; set; }
 
         public Category Category { get; init; }
-
-        public IEnumerable<ProductsToppings> Toppings { get; init; } = new List<ProductsToppings>();
 
     }
 }

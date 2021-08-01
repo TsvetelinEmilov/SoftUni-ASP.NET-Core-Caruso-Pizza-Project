@@ -4,14 +4,16 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210730120450_CategoryOrderOrderProductProductToppingTables")]
+    partial class CategoryOrderOrderProductProductToppingTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,7 +71,7 @@ namespace CarusoPizza.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PizzaSizeId")
+                    b.Property<int>("PizzaSize")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -84,8 +86,6 @@ namespace CarusoPizza.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("PizzaSizeId");
 
                     b.HasIndex("ProductId");
 
@@ -108,21 +108,6 @@ namespace CarusoPizza.Migrations
                     b.HasIndex("ToppingId");
 
                     b.ToTable("OrderProductsToppings");
-                });
-
-            modelBuilder.Entity("CarusoPizza.Data.Models.PizzaSize", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PizzaSizes");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Product", b =>
@@ -171,9 +156,6 @@ namespace CarusoPizza.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool?>("IsOrdered")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -414,11 +396,6 @@ namespace CarusoPizza.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarusoPizza.Data.Models.PizzaSize", "PizzaSize")
-                        .WithMany("OrderProducts")
-                        .HasForeignKey("PizzaSizeId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("CarusoPizza.Data.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -426,8 +403,6 @@ namespace CarusoPizza.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
-
-                    b.Navigation("PizzaSize");
 
                     b.Navigation("Product");
                 });
@@ -532,11 +507,6 @@ namespace CarusoPizza.Migrations
             modelBuilder.Entity("CarusoPizza.Data.Models.OrderProduct", b =>
                 {
                     b.Navigation("Toppings");
-                });
-
-            modelBuilder.Entity("CarusoPizza.Data.Models.PizzaSize", b =>
-                {
-                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Topping", b =>
