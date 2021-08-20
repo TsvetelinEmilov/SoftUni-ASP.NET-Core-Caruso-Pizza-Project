@@ -4,14 +4,16 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210820113256_RemovedRelationshipBetweenProductAndOrderTables")]
+    partial class RemovedRelationshipBetweenProductAndOrderTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,7 +89,7 @@ namespace CarusoPizza.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BasketId")
+                    b.Property<int>("BasketId")
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
@@ -440,7 +442,9 @@ namespace CarusoPizza.Migrations
                 {
                     b.HasOne("CarusoPizza.Data.Models.Basket", "Basket")
                         .WithMany("Products")
-                        .HasForeignKey("BasketId");
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CarusoPizza.Data.Models.PizzaSize", "PizzaSize")
                         .WithMany("OrderProducts")

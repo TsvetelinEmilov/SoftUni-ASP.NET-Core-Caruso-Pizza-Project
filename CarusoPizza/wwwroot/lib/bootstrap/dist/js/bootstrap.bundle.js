@@ -600,8 +600,8 @@
   var ClassName$2 = {
     CAROUSEL: 'carousel',
     ACTIVE: 'active',
-    SLIDE: 'slide',
-    RIGHT: 'carousel-item-right',
+      SLIDE: 'slide',
+      RIGHT: 'carousel-item-right',
     LEFT: 'carousel-item-left',
     NEXT: 'carousel-item-next',
     PREV: 'carousel-item-prev',
@@ -1071,8 +1071,8 @@
 
       if (!selector) {
         return;
-      }
-
+        }
+        
       var target = $(selector)[0];
 
       if (!target || !$(target).hasClass(ClassName$2.CAROUSEL)) {

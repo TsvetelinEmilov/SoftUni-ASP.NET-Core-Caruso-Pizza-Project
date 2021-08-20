@@ -1,7 +1,6 @@
 ﻿namespace CarusoPizza.Data.Models
 {
     using System;
-    using System.Collections.Generic;
 
     public class Order
     {
@@ -13,6 +12,8 @@
 
         public User Creator { get; init; }
 
-        public IEnumerable<OrderProduct> Products { get; init; } = new List<OrderProduct>();
+        public int BasketId { get; set; }
+
+        public Basket Basket { get; init; }
     }
 }

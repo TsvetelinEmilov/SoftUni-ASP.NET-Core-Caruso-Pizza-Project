@@ -3,6 +3,7 @@
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
     using CarusoPizza.Models.OrderProduct;
+    using CarusoPizza.Services.Products;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,39 +11,52 @@
     public class OrderProductController : Controller
     {
         private readonly CarusoPizzaDbContext data;
+        private readonly IProductService productService;
 
-        public OrderProductController(CarusoPizzaDbContext data)
-            => this.data = data;
+        public OrderProductController(
+            CarusoPizzaDbContext data,
+            IProductService productService)
+        {
+            this.data = data;
+            this.productService = productService;
+        }
 
         public IActionResult Order(int id)
         {
+            var product = this.productService.FindById(id);
+
             return View(new ToBasketFormModel
             {
-                PizzaSizes = GetPizzaSizes(),
-                Toppings = GetProductToppings(),
-                Product = this.data
-                .Products
-                .Where(p => p.Id == id)
-                .Select(p => new ProductListingModel
+                PizzaSizes = this.GetPizzaSizes(),
+                Toppings = this.GetProductToppings(),
+                Product = new ProductListingModel
                 {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description
-                })
-                .ToList()
-            }); 
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    ImageUrl = product.ImageUrl,
+                    Description = product.Description,
+                    CategoryId = product.CategoryId
+                }
+            });
         }
-
 
         [HttpPost]
         public IActionResult Order(int id, ToBasketFormModel productDetails)
         {
-            if (!this.data.Categories.Any(c => c.Id == productDetails.ToppingId))
-            {
-                this.ModelState.AddModelError(nameof(productDetails.ToppingId), "Category does not exist");
-            }
+            var product = this.productService.FindById(id);
+
+            var selectedToppings = productDetails
+                .Toppings
+                .Where(x => x.IsOrdered == true)
+                .Select(t => new ToppingViewModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Price = t.Price,
+                    IsOrdered = t.IsOrdered,
+                })
+                .ToList();
 
             if (!ModelState.IsValid)
             {
@@ -51,17 +65,44 @@
 
                 return this.View(productDetails);
             }
+            productDetails.Product = new ProductListingModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                Description = product.Description
+            };      
 
-            decimal productPrice = productDetails.Product.Sum(p => p.Price);
+            decimal productPrice = productDetails.Product.Price * productDetails.Quantity;
+
+            if (selectedToppings.Any())
+            {
+                foreach (var topping in selectedToppings)
+                {
+                    productPrice += topping.Price * productDetails.Quantity;
+                }
+            }
 
             var orderProductData = new OrderProduct
             {
+                ProductId = productDetails.Product.Id,
                 Comment = productDetails.Comment,
                 PizzaSizeId = productDetails.PizzaSizeId,
                 Quantity = productDetails.Quantity,
-                Price = productPrice * productDetails.Quantity,
-                Toppings = (IEnumerable<OrderProductsToppings>)productDetails.Toppings
+                Price = productPrice
             };
+
+            foreach (var topping in selectedToppings)
+            {
+                var orderProductToppings = new OrderProductsToppings
+                {
+                    OrderProductId = productDetails.Id,
+                    ToppingId = topping.Id,
+                };
+                orderProductData.Toppings.Add(orderProductToppings);
+            }
+
 
             this.data.OrderProducts.Add(orderProductData);
             this.data.SaveChanges();
@@ -69,12 +110,13 @@
             return this.RedirectToAction("All", "Products");
         }
 
-        private IEnumerable<ToppingViewModel> GetProductToppings()
+        private IList<ToppingViewModel> GetProductToppings()
             => this.data
             .Toppings
             .Select(p => new ToppingViewModel
             {
                 Id = p.Id,
+                IsOrdered = p.IsOrdered,
                 Name = p.Name,
                 Price = p.Price
             })

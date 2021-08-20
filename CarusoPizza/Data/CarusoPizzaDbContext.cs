@@ -23,6 +23,8 @@
 
         public DbSet<Order> Orders { get; init; }
 
+        public DbSet<Basket> Baskets { get; init; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -53,6 +55,11 @@
                     x.OrderProductId,
                     x.ToppingId
                 });
+
+            builder.Entity<Order>()
+            .HasOne(b => b.Basket)
+            .WithOne(o => o.Order)
+            .HasForeignKey<Basket>(o => o.OrderId);
 
             base.OnModelCreating(builder);
         }

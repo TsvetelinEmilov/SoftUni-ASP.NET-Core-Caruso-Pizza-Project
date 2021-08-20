@@ -1,0 +1,24 @@
+﻿@model AllBasketProductsFormModel
+
+@{
+    ViewBag.Title = "Menu";
+}
+
+@foreach (var product in Model.Products)
+{
+    <div class="col-md-4">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <h5 class="card-title text-center">@product.Quantity - @product.Price lv.</h5>
+                <p class="card-text">@product.Comment</p>
+                @foreach (var topping in product.Toppings)
+                {
+                    <p class="card-text">@topping.Name - @topping.Price lv.</p>
+                }
+
+            </div>
+        </div>
+    </div>
+}
+
+<a asp-controller="OrderProduct" asp-action="Order" class="btn btn-primary">Finish Order</a>

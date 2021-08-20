@@ -11,9 +11,7 @@
             <input asp-for="SearchTerm" class="form-control" placeholder="Search product">
         </div>
     </div>
-
 </form>
-
 <div class="row">
     @foreach (var product in Model.Products)
     {
@@ -24,8 +22,8 @@
                 <h5 class="card-title text-center">@product.Name - @product.Price lv.</h5>
                 <p class="card-text">@product.Description</p>
                   <a asp-controller="OrderProduct" asp-action="Order" asp-route-id="@product.Id" class="btn btn-primary">Order</a>
-                </div>
             </div>
+        </div>
     </div>
     }
 </div>
@@ -58,13 +56,5 @@
            asp-route-searchTerm="@Model.SearchTerm">Next page</a>
     </div>
 </div>
-
-@*@section Scripts {
-    <script>
-        $('#toppings button').on('click', ev => {
-
-        });
-    </script>
-    }*@
 
 

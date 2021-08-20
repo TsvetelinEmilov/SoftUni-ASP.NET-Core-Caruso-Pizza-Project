@@ -1,19 +1,24 @@
 ﻿namespace CarusoPizza.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using CarusoPizza.Data;
-    using CarusoPizza.Data.Models;
     using CarusoPizza.Models.Products;
+    using CarusoPizza.Services.Products;
     using Microsoft.AspNetCore.Mvc;
 
     public class ProductsController : Controller
     {
+        private readonly IProductService products;
         private readonly CarusoPizzaDbContext data;
 
-        public ProductsController(CarusoPizzaDbContext data)
-            => this.data = data;
+        public ProductsController(
+            CarusoPizzaDbContext data,
+            IProductService products)
+        {
+            this.data = data;
+            this.products = products;
+        }
 
         public IActionResult Add()
             => View(new AddProductFormModel
@@ -36,51 +41,26 @@
                 return this.View(product);
             }
 
-            var productData = new Product
-            {
-                Name = product.Name,
-                Weight = product.Weight,
-                Price = product.Price,
-                Description = product.Description,
-                ImageUrl = product.ImageUrl,
-                CategoryId = product.CategoryId
-            };
+            this.products.Add(product.Name,
+                product.Weight,
+                product.Price,
+                product.Description,
+                product.ImageUrl,
+                product.CategoryId);
 
-            this.data.Products.Add(productData);
-            this.data.SaveChanges();
-
-            return this.RedirectToAction("Index", "Home");
+            return this.RedirectToAction(nameof(All));
         }
 
+        [HttpGet]
         public IActionResult All([FromQuery]AllProductsQueryModel query)
         {
-            var productQuery = this.data.Products.AsQueryable();
+            var queryResult = this.products.All(
+                query.SearchTerm,
+                query.CurrentPage,
+                AllProductsQueryModel.ProductsPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                productQuery = productQuery.Where(p =>
-                       p.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                       p.Description.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            var totalProducts = productQuery.Count();
-
-            var products = productQuery
-                .OrderBy(p => p.Id)
-                .Skip((query.CurrentPage - 1) * AllProductsQueryModel.ProductsPerPage)
-                .Take(AllProductsQueryModel.ProductsPerPage)
-                .Select(p => new ProductsListingModel
-                {
-                    Id = p.Id,
-                    Name = p.Name,
-                    Price = p.Price,
-                    ImageUrl = p.ImageUrl,
-                    Description = p.Description
-                })
-                .ToList();
-
-            query.TotalProducts = totalProducts;
-            query.Products = products;
+            query.TotalProducts = queryResult.TotalProducts;
+            query.Products = queryResult.Products;
 
             return View(query);
         }

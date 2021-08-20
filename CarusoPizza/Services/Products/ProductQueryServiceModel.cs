@@ -1,10 +1,10 @@
-﻿namespace CarusoPizza.Models.Products
+﻿namespace CarusoPizza.Services
 {
     using CarusoPizza.Services.Products;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class AllProductsQueryModel
+    public class ProductQueryServiceModel
     {
         public const int ProductsPerPage = 6;
 
@@ -16,6 +16,5 @@
         public int TotalProducts { get; set; }
 
         public IEnumerable<ProductServiceModel> Products { get; set; }
-
     }
 }

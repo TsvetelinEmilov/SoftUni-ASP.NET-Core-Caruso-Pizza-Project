@@ -3,6 +3,7 @@ namespace CarusoPizza
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
     using CarusoPizza.Infrastructure;
+    using CarusoPizza.Services.Products;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -45,6 +46,8 @@ namespace CarusoPizza
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             
             });
+
+            services.AddTransient<IProductService, ProductService>();
 
             services.AddApplicationInsightsTelemetry();
         }

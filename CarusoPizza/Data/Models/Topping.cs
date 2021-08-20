@@ -17,7 +17,7 @@
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; init; }
 
-        public bool? IsOrdered { get; set; }
+        public bool IsOrdered { get; set; }
 
         public IEnumerable<OrderProductsToppings> OrderProducts { get; set; }
     }

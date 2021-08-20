@@ -1,33 +1,44 @@
-﻿using CarusoPizza.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-
-namespace CarusoPizza.Controllers
+﻿namespace CarusoPizza.Controllers
 {
+    using CarusoPizza.Data;
+    using CarusoPizza.Models;
+    using CarusoPizza.Models.Home;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Diagnostics;
+    using System.Linq;
+
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly CarusoPizzaDbContext data;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+        private const int CategoryPizzaId = 1;
 
+        public HomeController(CarusoPizzaDbContext data)
+            => this.data = data;
         public IActionResult Index()
         {
-            return View();
-        }
+            var products = this.data
+                .Products
+                .OrderByDescending(c => c.CategoryId == CategoryPizzaId)
+                .Select(p => new ProductIndexViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price
+                })
+                .Take(3)
+                .ToList();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            return View(new IndexViewModel
+            {
+                Products = products
+            });
 
+
+
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }

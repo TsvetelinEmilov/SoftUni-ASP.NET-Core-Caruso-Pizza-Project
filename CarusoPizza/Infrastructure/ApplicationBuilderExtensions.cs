@@ -58,7 +58,8 @@
                 new Category { Name = "Sub" },
                 new Category { Name = "Drink" },
                 new Category { Name = "Sauce" },
-        
+                new Category { Name = "Salad" }
+
             });
 
             data.SaveChanges();
@@ -92,68 +93,80 @@
 
             data.Toppings.AddRange(new[]
             {
-                new Topping 
+                new Topping
                 {
                     Name = "fresh mozzarella",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
-                 new Topping
+                new Topping
                 {
                     Name = "prosciutoo cotto",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "cheddar cheese",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "mozzarella",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "smoked melted cheese",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "spicy pepperoni",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "salsiche",
-                    Price = 1.50M
+                    Price = 1.50M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "red onion",
-                    Price = 1.00M
+                    Price = 1.00M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "mushrooms",
-                    Price = 1.00M
+                    Price = 1.00M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "green pepper",
-                    Price = 1.00M
+                    Price = 1.00M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "jalapenos peppers",
-                    Price = 1.00M
+                    Price = 1.00M,
+                    IsOrdered = false
                 },
                 new Topping
                 {
                     Name = "cherry tomato",
-                    Price = 1.00M
+                    Price = 1.00M,
+                    IsOrdered = false
                 }
-               
-            });
+
+            }) ;
         }
 
         private static void SeedAdministrator(IServiceProvider services)

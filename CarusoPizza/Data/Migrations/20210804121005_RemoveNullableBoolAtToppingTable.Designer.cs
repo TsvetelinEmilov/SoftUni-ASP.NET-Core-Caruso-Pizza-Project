@@ -4,41 +4,22 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210804121005_RemoveNullableBoolAtToppingTable")]
+    partial class RemoveNullableBoolAtToppingTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CarusoPizza.Data.Models.Basket", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SumPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("Baskets");
-                });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Category", b =>
                 {
@@ -64,9 +45,6 @@ namespace CarusoPizza.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BasketId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -87,11 +65,11 @@ namespace CarusoPizza.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BasketId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("PizzaSizeId")
                         .HasColumnType("int");
@@ -107,7 +85,7 @@ namespace CarusoPizza.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BasketId");
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("PizzaSizeId");
 
@@ -171,6 +149,9 @@ namespace CarusoPizza.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -180,6 +161,8 @@ namespace CarusoPizza.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -415,17 +398,6 @@ namespace CarusoPizza.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.Basket", b =>
-                {
-                    b.HasOne("CarusoPizza.Data.Models.Order", "Order")
-                        .WithOne("Basket")
-                        .HasForeignKey("CarusoPizza.Data.Models.Basket", "OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("CarusoPizza.Data.Models.Order", b =>
                 {
                     b.HasOne("CarusoPizza.Data.Models.User", "Creator")
@@ -438,9 +410,11 @@ namespace CarusoPizza.Migrations
 
             modelBuilder.Entity("CarusoPizza.Data.Models.OrderProduct", b =>
                 {
-                    b.HasOne("CarusoPizza.Data.Models.Basket", "Basket")
+                    b.HasOne("CarusoPizza.Data.Models.Order", "Order")
                         .WithMany("Products")
-                        .HasForeignKey("BasketId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CarusoPizza.Data.Models.PizzaSize", "PizzaSize")
                         .WithMany("OrderProducts")
@@ -453,7 +427,7 @@ namespace CarusoPizza.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Basket");
+                    b.Navigation("Order");
 
                     b.Navigation("PizzaSize");
 
@@ -487,7 +461,13 @@ namespace CarusoPizza.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("CarusoPizza.Data.Models.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
                     b.Navigation("Category");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -541,11 +521,6 @@ namespace CarusoPizza.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.Basket", b =>
-                {
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("CarusoPizza.Data.Models.Category", b =>
                 {
                     b.Navigation("Products");
@@ -553,7 +528,7 @@ namespace CarusoPizza.Migrations
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Order", b =>
                 {
-                    b.Navigation("Basket");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.OrderProduct", b =>

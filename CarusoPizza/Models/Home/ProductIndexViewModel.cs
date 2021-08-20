@@ -1,14 +1,13 @@
-﻿namespace CarusoPizza.Models.OrderProduct
+﻿namespace CarusoPizza.Models.Home
 {
-    public class ToppingViewModel
+    public class ProductIndexViewModel
     {
         public int Id { get; init; }
-
-        public bool IsOrdered { get; init; }
 
         public string Name { get; init; }
 
         public decimal Price { get; init; }
 
+        public string ImageUrl { get; init; }
     }
 }

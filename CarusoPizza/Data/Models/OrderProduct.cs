@@ -9,11 +9,11 @@
 
         public int ProductId { get; set; }
 
+        public Product Product { get; set; }
+
         public int? PizzaSizeId { get; set; }
 
         public PizzaSize PizzaSize { get; set; }
-
-        public Product Product { get; set; }
 
         public int Quantity { get; set; }
 
@@ -22,11 +22,11 @@
 
         public string Comment { get; set; }
 
-        public int OrderId { get; set; }
+        public int? BasketId { get; set; }
 
-        public Order Order { get; set; }
+        public Basket Basket { get; init; }
 
-        public IEnumerable<OrderProductsToppings> Toppings { get; set; } = new List<OrderProductsToppings>();
+        public List<OrderProductsToppings> Toppings { get; set; } = new List<OrderProductsToppings>();
 
     }
 }

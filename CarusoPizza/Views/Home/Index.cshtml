@@ -1,8 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Welcome!";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner" role="listbox">
+                @for (int i = 0; i < Model.Products.Count; i++)
+                {
+                    var product = Model.Products[i];
+                    <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
+                        <center>
+                            <img class="img-thumbnail " src="@product.ImageUrl" alt="@product.Name @product.Price" width="700" height="500">
+                        </center>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5><a class="btn btn-primary" asp-controller="OrderProduct" asp-action="Order" asp-route-id="@product.Id">@product.Name @product.Price</a></h5>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+    </a>
 </div>
+
+
+

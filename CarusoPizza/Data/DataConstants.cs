@@ -40,6 +40,9 @@
         public class Basket
         {
             public const int CommentMaxLength = 40;
+
+            public const int QuantityMinValue = 1;
+            public const int QuantityMaxValue = 100;
         }
 
     }
