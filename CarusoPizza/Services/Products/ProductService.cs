@@ -55,7 +55,9 @@
                     Name = p.Name,
                     Price = p.Price,
                     ImageUrl = p.ImageUrl,
-                    Description = p.Description
+                    Description = p.Description,
+                    CategoryId = p.CategoryId
+
                 })
                 .ToList();
 
@@ -88,6 +90,26 @@
             this.data.SaveChanges();
 
             return productData.Id;
+        }
+        public bool Edit(int id, string name, decimal price, string imageUrl, string description, int weight, int categoryId)
+        {
+            var product = this.data.Products.Find(id);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            product.Name = name;
+            product.Price = price;
+            product.ImageUrl = imageUrl;
+            product.Description = description;
+            product.Weight = weight;
+            product.CategoryId = categoryId;
+
+            this.data.SaveChanges();
+
+            return true;
         }
     }
 }

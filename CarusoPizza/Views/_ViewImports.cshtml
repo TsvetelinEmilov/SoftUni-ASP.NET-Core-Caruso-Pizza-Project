@@ -1,8 +1,15 @@
-﻿@using CarusoPizza
+﻿@using Microsoft.AspNetCore.Identity
+@using CarusoPizza.Infrastructure
+@using CarusoPizza
 @using CarusoPizza.Models
 @using CarusoPizza.Models.Products
 @using CarusoPizza.Models.OrderProduct
 @using CarusoPizza.Models.Basket
 @using CarusoPizza.Models.Home
+@using CarusoPizza.Data.Models
+
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

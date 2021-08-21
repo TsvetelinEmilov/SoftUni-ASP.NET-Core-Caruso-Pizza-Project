@@ -21,15 +21,6 @@
 
         public IActionResult Index(AllBasketProductsFormModel query)
         {
-            //var queryResult = this.products.All(
-            //    query.SearchTerm,
-            //    query.CurrentPage,
-            //    AllProductsQueryModel.ProductsPerPage);
-
-            //query.TotalProducts = queryResult.TotalProducts;
-            //query.Products = queryResult.Products;
-
-            //return View(query);
             query.Products = this.data
                 .OrderProducts
                 .Select(p => new BasketProductViewModel
