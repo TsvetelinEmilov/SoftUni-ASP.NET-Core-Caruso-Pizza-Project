@@ -40,11 +40,27 @@
                         {
                             <a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-info">Edit</a>
                             <a asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
-                            <a asp-controller="Products" asp-action="Stop" asp-route-id="@product.Id" class="btn btn-warning">Stop</a>
+                            if (!product.IsStopped)
+                            {
+                                <a asp-controller="Products" asp-action="Stop" asp-route-id="@product.Id" class="btn btn-warning">Stop</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Products" asp-action="Start" asp-route-id="@product.Id" class="btn btn-warning">Start</a>
+                            }
+
                         }
                         else
                         {
-                            <a asp-controller="OrderProduct" asp-action="Order" asp-route-id="@product.Id" class="btn btn-primary">Choose</a>
+                            if (!product.IsStopped)
+                            {
+                                <a asp-controller="OrderProduct" asp-action="Order" asp-route-id="@product.Id" class="btn btn-primary">Choose</a>
+                            }
+                            else
+                            {
+                                <p class="text-danger">Not available!</p>
+                            }
+
                         }
 
                     </div>

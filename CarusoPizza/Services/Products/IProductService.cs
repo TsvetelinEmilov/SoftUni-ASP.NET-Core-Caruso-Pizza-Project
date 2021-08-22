@@ -28,6 +28,9 @@
 
         bool Delete(int id);
 
+        bool Stop(int id);
+        bool Start(int id);
+
         ProductServiceModel FindById(int id);
 
         IEnumerable<ProductCategoryServiceModel> ProductsCategories();

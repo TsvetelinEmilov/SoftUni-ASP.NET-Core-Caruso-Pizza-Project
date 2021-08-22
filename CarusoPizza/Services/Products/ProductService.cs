@@ -25,6 +25,7 @@
                 Price = p.Price,
                 ImageUrl = p.ImageUrl,
                 Description = p.Description,
+                IsStopped = p.IsStopped,
                 CategoryId = p.CategoryId
             })
             .FirstOrDefault();
@@ -59,6 +60,7 @@
                     Price = p.Price,
                     ImageUrl = p.ImageUrl,
                     Description = p.Description,
+                    IsStopped = p.IsStopped,
                     CategoryId = p.CategoryId
 
                 })
@@ -86,7 +88,8 @@
                 Price = price,
                 Description = description,
                 ImageUrl = imageUrl,
-                CategoryId = categoryId
+                CategoryId = categoryId,
+                IsStopped = false
             };
 
             this.data.Products.Add(productData);
@@ -130,6 +133,36 @@
             }
 
             this.data.Products.Remove(product);
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+        public bool Stop(int id)
+        {
+            var product = this.data.Products.Find(id);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            product.IsStopped = true;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+        public bool Start(int id)
+        {
+            var product = this.data.Products.Find(id);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            product.IsStopped = false;
 
             this.data.SaveChanges();
 

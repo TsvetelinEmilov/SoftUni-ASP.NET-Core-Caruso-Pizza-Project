@@ -3,6 +3,7 @@ namespace CarusoPizza
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
     using CarusoPizza.Infrastructure;
+    using CarusoPizza.Services.OrderProduct;
     using CarusoPizza.Services.Products;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -48,6 +49,7 @@ namespace CarusoPizza
             });
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderProductService, OrderProductService>();
 
             services.AddApplicationInsightsTelemetry();
         }

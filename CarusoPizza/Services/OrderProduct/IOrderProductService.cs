@@ -1,7 +1,12 @@
 ﻿namespace CarusoPizza.Services.OrderProduct
 {
-    interface IOrderProductService
-    {
+    using CarusoPizza.Services.OrderProduct.Models;
+    using System.Collections.Generic;
 
+    public interface IOrderProductService
+    {
+        IList<ToppingServiceModel> ProductsToppings();
+
+        IEnumerable<PizzaSizeServiceModel> PizzaSizes();
     }
 }

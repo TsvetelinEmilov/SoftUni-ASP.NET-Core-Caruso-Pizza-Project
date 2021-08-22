@@ -26,6 +26,8 @@
 
         public Basket Basket { get; init; }
 
+        public string UserId { get; init; }
+
         public List<OrderProductsToppings> Toppings { get; set; } = new List<OrderProductsToppings>();
 
     }

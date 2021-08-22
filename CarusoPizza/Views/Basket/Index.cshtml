@@ -3,22 +3,37 @@
 @{
     ViewBag.Title = "Basket";
 }
-
-@foreach (var product in Model.Products)
+@if (Model.Products.Count() == 0)
 {
-    <div class="col-md-4">
-        <div class="card mb-3">
-            <div class="card-body text-center">
-                <h5 class="card-title text-center">@product.Quantity - @product.Price lv.</h5>
-                <p class="card-text">@product.Comment</p>
-                @foreach (var topping in product.Toppings)
-                {
-                    <p class="card-text">@topping.Name - @topping.Price lv.</p>
-                }
-
+    <h3 class="text-center">Your Basket is empty.</h3>
+    <a class="btn btn-primary" role="button" asp-controller="Products" asp-action="All">Go fill your Basket!</a>
+}
+else
+{
+    @foreach (var product in Model.Products)
+    {
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src=@product.ProductImage class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">@product.Quantity x @product.ProductName - @product.Price lv.</h5>
+                    <p class="card-text">@product.ProductDescription</p>
+                    @foreach (var topping in product.Toppings)
+                    {
+                        <p class="card-text"><small class="text-muted">- @topping.Name</small></p>
+                    }
+                    <p class="card-text"><small class="text-dark">Comment: @product.Comment</small></p>
+                </div>
+                <a asp-controller="Basket" asp-action="Remove" asp-route-productId="@product.Id" asp-route-userId="@User.GetId()" class="btn btn-outline-warning">Remove from basket</a>
+                <a asp-controller="Basket" asp-action="Edit" asp-route-productId="@product.ProductId" asp-route-userId="@User.GetId()" class="btn btn-outline-info">Edit product</a>
             </div>
         </div>
     </div>
+    }
+    <a asp-controller="Products" asp-action="All" class="btn btn-link">Back to Menu</a>
+    <a asp-controller="Basket" asp-action="Finish" class="btn btn-primary">Finish Order</a>
 }
 
-<a asp-controller="OrderProduct" asp-action="Order" class="btn btn-primary">Finish Order</a>

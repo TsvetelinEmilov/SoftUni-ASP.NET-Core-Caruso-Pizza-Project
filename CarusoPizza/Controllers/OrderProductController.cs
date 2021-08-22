@@ -2,33 +2,49 @@
 {
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
+    using CarusoPizza.Infrastructure;
     using CarusoPizza.Models.OrderProduct;
+    using CarusoPizza.Services.OrderProduct;
+    using CarusoPizza.Services.OrderProduct.Models;
     using CarusoPizza.Services.Products;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
     using System.Linq;
 
     public class OrderProductController : Controller
     {
         private readonly CarusoPizzaDbContext data;
         private readonly IProductService productService;
+        private readonly IOrderProductService orderProductService;
 
         public OrderProductController(
             CarusoPizzaDbContext data,
-            IProductService productService)
+            IProductService productService,
+            IOrderProductService orderProductService)
         {
             this.data = data;
             this.productService = productService;
+            this.orderProductService = orderProductService;
         }
-
+        [Authorize]
         public IActionResult Order(int id)
         {
             var product = this.productService.FindById(id);
 
+            if (User.GetId() == null)
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
+            if (product.IsStopped)
+            {
+                return BadRequest();
+            }
+
             return View(new ToBasketFormModel
             {
-                PizzaSizes = this.GetPizzaSizes(),
-                Toppings = this.GetProductToppings(),
+                PizzaSizes = this.orderProductService.PizzaSizes(),
+                Toppings = this.orderProductService.ProductsToppings(),
                 Product = new ProductListingModel
                 {
                     Id = product.Id,
@@ -40,16 +56,18 @@
                 }
             });
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Order(int id, ToBasketFormModel productDetails)
         {
+            var userId = User.GetId();
+
             var product = this.productService.FindById(id);
 
             var selectedToppings = productDetails
                 .Toppings
                 .Where(x => x.IsOrdered == true)
-                .Select(t => new ToppingViewModel
+                .Select(t => new ToppingServiceModel
                 {
                     Id = t.Id,
                     Name = t.Name,
@@ -58,10 +76,20 @@
                 })
                 .ToList();
 
+            if (userId == null)
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+
+            if (product.IsStopped)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
-                productDetails.Toppings = this.GetProductToppings();
-                productDetails.PizzaSizes = this.GetPizzaSizes();
+                productDetails.Toppings = this.orderProductService.ProductsToppings();
+                productDetails.PizzaSizes = this.orderProductService.PizzaSizes();
 
                 return this.View(productDetails);
             }
@@ -90,7 +118,8 @@
                 Comment = productDetails.Comment,
                 PizzaSizeId = productDetails.PizzaSizeId,
                 Quantity = productDetails.Quantity,
-                Price = productPrice
+                Price = productPrice,
+                UserId = userId
             };
 
             foreach (var topping in selectedToppings)
@@ -110,26 +139,5 @@
             return this.RedirectToAction("All", "Products");
         }
 
-        private IList<ToppingViewModel> GetProductToppings()
-            => this.data
-            .Toppings
-            .Select(p => new ToppingViewModel
-            {
-                Id = p.Id,
-                IsOrdered = p.IsOrdered,
-                Name = p.Name,
-                Price = p.Price
-            })
-            .ToList();
-
-        private IEnumerable<PizzaSizeViewModel> GetPizzaSizes()
-            => this.data
-            .PizzaSizes
-            .Select(s => new PizzaSizeViewModel
-            {
-                Id = s.Id,
-                Size = s.Size
-            })
-            .ToList();
     }
 }

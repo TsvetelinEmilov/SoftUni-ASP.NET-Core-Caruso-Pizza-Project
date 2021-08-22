@@ -10,6 +10,8 @@
         [Column(TypeName = "decimal(18,2)")]
         public decimal SumPrice { get; set; }
 
+        public string UserId { get; init; }
+
         public int OrderId { get; set; }
 
         public Order Order { get; init; }

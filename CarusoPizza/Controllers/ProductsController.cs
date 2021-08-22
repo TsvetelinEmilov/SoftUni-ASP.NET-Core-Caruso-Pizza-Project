@@ -129,6 +129,7 @@
             return RedirectToAction(nameof(All));
 
         }
+
         [Authorize]
         public IActionResult Delete(int id)
         {
@@ -138,6 +139,32 @@
             }
 
             this.products.Delete(id);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Stop(int id)
+        {
+            if (!User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.products.Stop(id);
+
+            return RedirectToAction(nameof(All));
+        }
+
+        [Authorize]
+        public IActionResult Start(int id)
+        {
+            if (!User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.products.Start(id);
 
             return RedirectToAction(nameof(All));
         }

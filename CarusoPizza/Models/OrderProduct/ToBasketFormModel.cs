@@ -1,5 +1,6 @@
 ﻿namespace CarusoPizza.Models.OrderProduct
 {
+    using CarusoPizza.Services.OrderProduct.Models;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -18,7 +19,7 @@
         [Display(Name = "Pizza Size")]
         public int? PizzaSizeId { get; init; }
 
-        public IEnumerable<PizzaSizeViewModel> PizzaSizes { get; set; }
+        public IEnumerable<PizzaSizeServiceModel> PizzaSizes { get; set; }
 
         [Range(QuantityMinValue, QuantityMaxValue)]
         public int Quantity { get; init; }
@@ -29,6 +30,6 @@
         [Display(Name = "Toppings")]
         public int? ToppingId { get; init; }
 
-        public IList<ToppingViewModel> Toppings { get; set; } = new List<ToppingViewModel>();
+        public IList<ToppingServiceModel> Toppings { get; set; }
     }
 }
