@@ -1,4 +1,4 @@
-﻿namespace CarusoPizza.Services.Products
+﻿namespace CarusoPizza.Services.Products.Modelis
 {
     public class ProductServiceModel
     {

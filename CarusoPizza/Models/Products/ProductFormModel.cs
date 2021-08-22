@@ -1,10 +1,11 @@
 ﻿namespace CarusoPizza.Models.Products
 {
+    using CarusoPizza.Services.Products.Modelis;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using static Data.DataConstants.Product;
-    public class AddProductFormModel
+    public class ProductFormModel
     {
         [Required]
         [StringLength(
@@ -32,6 +33,6 @@
         [Display(Name = "Category")]
         public int CategoryId { get; init; }
 
-        public IEnumerable<ProductCategoryViewModel> Categories { get; set; }
+        public IEnumerable<ProductCategoryServiceModel> Categories { get; set; }
     }
 }

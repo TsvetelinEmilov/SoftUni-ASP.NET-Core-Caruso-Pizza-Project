@@ -2,6 +2,8 @@
 {
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
+    using CarusoPizza.Services.Products.Modelis;
+    using System.Collections.Generic;
     using System.Linq;
     public class ProductService : IProductService
     {
@@ -15,6 +17,7 @@
         public ProductServiceModel FindById(int id)
             => this.data
             .Products
+            .Where(p => p.Id == id)
             .Select(p => new ProductServiceModel
             {
                 Id = p.Id,
@@ -24,7 +27,7 @@
                 Description = p.Description,
                 CategoryId = p.CategoryId
             })
-            .FirstOrDefault(p => p.Id == id);
+            .FirstOrDefault();
 
         public ProductQueryServiceModel All(
             string searchTerm,
@@ -91,7 +94,12 @@
 
             return productData.Id;
         }
-        public bool Edit(int id, string name, decimal price, string imageUrl, string description, int weight, int categoryId)
+        public bool Edit(int id, string name,
+            int weight,
+            decimal price,
+            string description,
+            string imageUrl,
+            int categoryId)
         {
             var product = this.data.Products.Find(id);
 
@@ -111,5 +119,36 @@
 
             return true;
         }
+
+        public bool Delete(int id)
+        {
+            var product = this.data.Products.Find(id);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            this.data.Products.Remove(product);
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        public IEnumerable<ProductCategoryServiceModel> ProductsCategories()
+            => this.data
+            .Categories
+            .Select(p => new ProductCategoryServiceModel
+            {
+                Id = p.Id,
+                Name = p.Name
+            })
+            .ToList();
+
+        public bool CategoryExists(int categoryId)
+            => this.data
+            .Categories
+            .Any(c => c.Id == categoryId);
     }
 }

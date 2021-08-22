@@ -1,6 +1,7 @@
 ﻿namespace CarusoPizza.Services.Products
 {
-    using CarusoPizza.Data.Models;
+    using CarusoPizza.Services.Products.Modelis;
+    using System.Collections.Generic;
 
     public interface IProductService
     {
@@ -19,13 +20,19 @@
         bool Edit(
             int id,
             string name,
-            decimal price,
-            string imageUrl,
-            string description,
             int weight,
+            decimal price,
+            string description,
+            string imageUrl,
             int categoryId);
 
+        bool Delete(int id);
+
         ProductServiceModel FindById(int id);
+
+        IEnumerable<ProductCategoryServiceModel> ProductsCategories();
+
+        bool CategoryExists(int categoryId);
 
 
     }

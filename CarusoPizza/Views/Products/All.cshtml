@@ -12,52 +12,22 @@
         </div>
     </div>
 </form>
-@**@
 <div class="row">
-    @for (int i = 1; i < 6; i++)
-    {
-        if (i == 1)
+   
+        @*if (i == 1)
         {
             <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
                 <center>
                     <h2 class="heading-margin text-center">PIZZAS</h2>
                 </center>
-            </div>
+            </div>*@
+        @{ 
+            var orderedProducts = Model.Products
+                .OrderBy(p => p.CategoryId)
+                .ToList();
+        }
 
-        }
-        if (i == 2)
-        {
-            <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-                <center>
-                    <h2 class="heading-margin text-center">SUBS</h2>
-                </center>
-            </div>
-        }
-        if (i == 3)
-        {
-            <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-                <center>
-                    <h2 class="heading-margin text-center">DRINKS</h2>
-                </center>
-            </div>
-        }
-        if (i == 4)
-        {
-            <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-                <center>
-                    <h2 class="heading-margin text-center">SAUCES</h2>
-                </center>
-            </div>
-        }
-        if (i == 5)
-        {
-            <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-                <center>
-                    <h2 class="heading-margin text-center">SALADS</h2>
-                </center>
-            </div>
-        }
-        @foreach (var product in Model.Products.OrderBy(x => x.CategoryId).Where(x => x.CategoryId == i))
+        @foreach (var product in orderedProducts)
         {
 
             <div class="col-md-4">
@@ -82,7 +52,6 @@
             </div>
 
         }
-    }
 </div>
 
 @{

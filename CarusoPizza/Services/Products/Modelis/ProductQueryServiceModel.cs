@@ -1,6 +1,5 @@
-﻿namespace CarusoPizza.Services
+﻿namespace CarusoPizza.Services.Products.Modelis
 {
-    using CarusoPizza.Services.Products;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 

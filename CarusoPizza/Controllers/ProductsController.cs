@@ -1,8 +1,5 @@
 ﻿namespace CarusoPizza.Controllers
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using CarusoPizza.Data;
     using CarusoPizza.Infrastructure;
     using CarusoPizza.Models.Products;
     using CarusoPizza.Services.Products;
@@ -12,13 +9,10 @@
     public class ProductsController : Controller
     {
         private readonly IProductService products;
-        private readonly CarusoPizzaDbContext data;
 
         public ProductsController(
-            CarusoPizzaDbContext data,
             IProductService products)
         {
-            this.data = data;
             this.products = products;
         }
 
@@ -30,29 +24,29 @@
                 return Unauthorized();
             }
 
-            return View(new AddProductFormModel
+            return View(new ProductFormModel
             {
-                Categories = this.GetProductCategories()
+                Categories = this.products.ProductsCategories()
             });
         }
             
         [Authorize]
         [HttpPost]
-        public IActionResult Add(AddProductFormModel product)
+        public IActionResult Add(ProductFormModel product)
         {
             if (!User.IsAdmin())
             {
                 return BadRequest();
             }
 
-            if (!this.data.Categories.Any(c => c.Id == product.CategoryId))
+            if (!this.products.CategoryExists(product.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist");
             }
 
             if (!ModelState.IsValid)
             {
-                product.Categories = this.GetProductCategories();
+                product.Categories = this.products.ProductsCategories();
 
                 return this.View(product);
             }
@@ -83,69 +77,69 @@
         [Authorize]
         public IActionResult Edit(int id)
         {
+            var product = this.products.FindById(id);
+
             if (!User.IsAdmin())
             {
                 return Unauthorized();
             }
 
-            var product = this.products.FindById(id);
-
-            var productForm = new AddProductFormModel
+            return View(new ProductFormModel
             {
                 Name = product.Name,
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
                 Description = product.Description,
                 Weight = product.Weight,
-                CategoryId = product.CategoryId
-            };
+                CategoryId = product.CategoryId,
+                Categories = this.products.ProductsCategories()
+            });
 
-            productForm.Categories = this.GetProductCategories();
-
-            return View(productForm);
         }
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int id, AddProductFormModel product)
+        public IActionResult Edit(int id, ProductFormModel product)
         {
-            if (!User.IsAdmin())
-            {
-                return BadRequest();
-            }
-
-            if (!this.data.Categories.Any(c => c.Id == product.CategoryId))
+            if (!this.products.CategoryExists(product.CategoryId))
             {
                 this.ModelState.AddModelError(nameof(product.CategoryId), "Category does not exist");
             }
 
             if (!ModelState.IsValid)
             {
-                product.Categories = this.GetProductCategories();
+                product.Categories = this.products.ProductsCategories();
 
                 return this.View(product);
+            }
+
+            if (!User.IsAdmin())
+            {
+                return BadRequest();
             }
 
             this.products.Edit(
                 id,
                 product.Name,
-                product.Price,
-                product.ImageUrl,
-                product.Description,
                 product.Weight,
+                product.Price,
+                product.Description,
+                product.ImageUrl,
                 product.CategoryId);
 
             return RedirectToAction(nameof(All));
 
         }
-
-        private IEnumerable<ProductCategoryViewModel> GetProductCategories()
-            => this.data
-            .Categories
-            .Select(p => new ProductCategoryViewModel
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            if (!User.IsAdmin())
             {
-                Id = p.Id,
-                Name = p.Name
-            })
-            .ToList();
+                return BadRequest();
+            }
+
+            this.products.Delete(id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

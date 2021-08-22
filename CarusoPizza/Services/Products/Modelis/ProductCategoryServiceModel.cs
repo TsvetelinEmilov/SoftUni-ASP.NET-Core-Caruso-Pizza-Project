@@ -1,6 +1,6 @@
-﻿namespace CarusoPizza.Models.Products
+﻿namespace CarusoPizza.Services.Products.Modelis
 {
-    public class ProductCategoryViewModel
+    public class ProductCategoryServiceModel
     {
         public int Id { get; init; }
 
