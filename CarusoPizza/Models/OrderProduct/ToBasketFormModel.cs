@@ -1,6 +1,7 @@
 ﻿namespace CarusoPizza.Models.OrderProduct
 {
     using CarusoPizza.Services.OrderProduct.Models;
+    using CarusoPizza.Services.Products.Modelis;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -12,12 +13,12 @@
 
         public int ProductId { get; set; }
 
-        public ProductListingModel Product { get; set; }
+        public ProductServiceModel Product { get; set; }
 
-        public decimal SumPrice { get; set; } 
+        public decimal Price { get; set; } 
 
         [Display(Name = "Pizza Size")]
-        public int? PizzaSizeId { get; init; }
+        public int PizzaSizeId { get; init; }
 
         public IEnumerable<PizzaSizeServiceModel> PizzaSizes { get; set; }
 

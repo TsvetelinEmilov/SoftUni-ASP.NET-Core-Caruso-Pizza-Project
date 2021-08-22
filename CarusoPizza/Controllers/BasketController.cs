@@ -5,6 +5,7 @@
     using CarusoPizza.Infrastructure;
     using CarusoPizza.Models.Basket;
     using CarusoPizza.Models.OrderProduct;
+    using CarusoPizza.Services.Basket;
     using CarusoPizza.Services.OrderProduct;
     using CarusoPizza.Services.Products;
     using Microsoft.AspNetCore.Authorization;
@@ -16,15 +17,18 @@
         private readonly CarusoPizzaDbContext data;
         private readonly IProductService productService;
         private readonly IOrderProductService orderProductService;
+        private readonly IBasketService basketService;
 
         public BasketController(
             CarusoPizzaDbContext data,
             IProductService productService,
-            IOrderProductService orderProductService)
+            IOrderProductService orderProductService,
+            IBasketService basketService)
         {
             this.orderProductService = orderProductService;
             this.data = data;
             this.productService = productService;
+            this.basketService = basketService;
         }
         [Authorize]
         public IActionResult Index(AllBasketProductsFormModel query)
@@ -88,7 +92,7 @@
             return RedirectToAction(nameof(Index));
         }
         [Authorize]
-        public IActionResult Edit(int productId, string userId)
+        public IActionResult Edit(int id, int productId, string userId)
         {
             if (User.GetId() != userId)
             {
@@ -97,20 +101,45 @@
 
             var product = this.productService.FindById(productId);
 
+            var orderProduct = this.data.OrderProducts.FirstOrDefault(op => op.Id == id);
+
             return View(new ToBasketFormModel
             {
                 PizzaSizes = this.orderProductService.PizzaSizes(),
                 Toppings = this.orderProductService.ProductsToppings(),
-                Product = new ProductListingModel
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Price = product.Price,
-                    ImageUrl = product.ImageUrl,
-                    Description = product.Description,
-                    CategoryId = product.CategoryId
-                }
+                Product = product,
+                PizzaSizeId = orderProduct.PizzaSizeId,
+                Price = orderProduct.Price,
+                Comment = orderProduct.Comment,
+                Quantity = orderProduct.Quantity,
+                ProductId = orderProduct.ProductId
             });
+        }
+        [Authorize]
+        [HttpPost]
+        public IActionResult Edit(int id, int productId, string userId, ToBasketFormModel modelProduct)
+        {
+            if (!ModelState.IsValid)
+            {
+                modelProduct.Toppings = this.orderProductService.ProductsToppings();
+                modelProduct.PizzaSizes = this.orderProductService.PizzaSizes();
+
+                return this.View(modelProduct);
+            }
+
+            if (userId != User.GetId())
+            {
+                return BadRequest();
+            }
+
+            this.basketService.Edit(id,
+                modelProduct.Comment,
+                modelProduct.PizzaSizeId,
+                modelProduct.Quantity,
+                modelProduct.Price,
+                modelProduct.Toppings);
+
+            return RedirectToAction(nameof(Index));
         }
 
     }

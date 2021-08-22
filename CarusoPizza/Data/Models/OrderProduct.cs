@@ -11,7 +11,7 @@
 
         public Product Product { get; set; }
 
-        public int? PizzaSizeId { get; set; }
+        public int PizzaSizeId { get; set; }
 
         public PizzaSize PizzaSize { get; set; }
 

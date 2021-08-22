@@ -7,6 +7,7 @@
     using CarusoPizza.Services.OrderProduct;
     using CarusoPizza.Services.OrderProduct.Models;
     using CarusoPizza.Services.Products;
+    using CarusoPizza.Services.Products.Modelis;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
@@ -45,7 +46,7 @@
             {
                 PizzaSizes = this.orderProductService.PizzaSizes(),
                 Toppings = this.orderProductService.ProductsToppings(),
-                Product = new ProductListingModel
+                Product = new ProductServiceModel
                 {
                     Id = product.Id,
                     Name = product.Name,
@@ -93,7 +94,7 @@
 
                 return this.View(productDetails);
             }
-            productDetails.Product = new ProductListingModel
+            productDetails.Product = new ProductServiceModel
             {
                 Id = product.Id,
                 Name = product.Name,
