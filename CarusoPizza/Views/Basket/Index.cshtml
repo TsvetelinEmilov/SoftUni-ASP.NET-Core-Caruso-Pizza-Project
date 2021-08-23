@@ -28,7 +28,7 @@ else
                     <p class="card-text"><small class="text-dark">Comment: @product.Comment</small></p>
                 </div>
                 <a asp-controller="Basket" asp-action="Remove" asp-route-productId="@product.Id" asp-route-userId="@User.GetId()" class="btn btn-outline-warning">Remove from basket</a>
-                <a asp-controller="Basket" asp-action="Edit" asp-route-id="@product.Id" asp-route-productId="@product.ProductId" asp-route-userId="@User.GetId()" class="btn btn-outline-info">Edit product</a>
+                <a asp-controller="Basket" asp-action="Edit" asp-route-id="@product.Id" asp-route-productId="@product.ProductId" class="btn btn-outline-info">Edit product</a>
             </div>
         </div>
     </div>

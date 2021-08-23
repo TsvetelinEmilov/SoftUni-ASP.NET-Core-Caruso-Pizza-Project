@@ -5,6 +5,7 @@
 
     public interface IBasketService
     {
-         bool Edit(int id, string comment, int pizzaSizeId, int quantity, decimal price, IList<ToppingServiceModel> toppings);
+         bool Edit(int id, int productId, string comment, int pizzaSizeId, int quantity, decimal price, IList<ToppingServiceModel> toppings);
+
     }
 }

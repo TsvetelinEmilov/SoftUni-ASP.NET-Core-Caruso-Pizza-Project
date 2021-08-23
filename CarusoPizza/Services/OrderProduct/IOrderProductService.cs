@@ -8,5 +8,9 @@
         IList<ToppingServiceModel> ProductsToppings();
 
         IEnumerable<PizzaSizeServiceModel> PizzaSizes();
+
+        OrderProductServiceModel FindById(int id);
+
+        bool Remove(int productId, string userId);
     }
 }

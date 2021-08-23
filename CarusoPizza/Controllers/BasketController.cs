@@ -7,6 +7,7 @@
     using CarusoPizza.Models.OrderProduct;
     using CarusoPizza.Services.Basket;
     using CarusoPizza.Services.OrderProduct;
+    using CarusoPizza.Services.OrderProduct.Models;
     using CarusoPizza.Services.Products;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -76,32 +77,26 @@
                 return BadRequest();
             }
 
-            var productToRemove = this.data
-                .OrderProducts
-                .Where(p => p.Id == productId && p.UserId == userId)
-                .FirstOrDefault();
+            var productToRemove = this.orderProductService.Remove(productId, userId);
 
-            if (productToRemove == null)
+            if (!productToRemove)
             {
                 RedirectToAction(nameof(Index));
             }
 
-            this.data.OrderProducts.Remove(productToRemove);
-            this.data.SaveChanges();
-
             return RedirectToAction(nameof(Index));
         }
         [Authorize]
-        public IActionResult Edit(int id, int productId, string userId)
+        public IActionResult Edit(int id, int productId)
         {
-            if (User.GetId() != userId)
+            var product = this.productService.FindById(productId);
+
+            var orderProduct = this.orderProductService.FindById(id);
+
+            if (User.GetId() != orderProduct.UserId)
             {
                 return BadRequest();
             }
-
-            var product = this.productService.FindById(productId);
-
-            var orderProduct = this.data.OrderProducts.FirstOrDefault(op => op.Id == id);
 
             return View(new ToBasketFormModel
             {
@@ -110,6 +105,7 @@
                 Product = product,
                 PizzaSizeId = orderProduct.PizzaSizeId,
                 Price = orderProduct.Price,
+                UserId = orderProduct.UserId,
                 Comment = orderProduct.Comment,
                 Quantity = orderProduct.Quantity,
                 ProductId = orderProduct.ProductId
@@ -117,8 +113,8 @@
         }
         [Authorize]
         [HttpPost]
-        public IActionResult Edit(int id, int productId, string userId, ToBasketFormModel modelProduct)
-        {
+        public IActionResult Edit(int id, ToBasketFormModel modelProduct)
+         {
             if (!ModelState.IsValid)
             {
                 modelProduct.Toppings = this.orderProductService.ProductsToppings();
@@ -127,17 +123,41 @@
                 return this.View(modelProduct);
             }
 
-            if (userId != User.GetId())
+            var orderProduct = this.orderProductService.FindById(id);
+
+            if (orderProduct.UserId != User.GetId())
             {
                 return BadRequest();
             }
 
+            var selectedToppings = modelProduct
+                .Toppings
+                .Where(x => x.IsOrdered == true)
+                .Select(t => new ToppingServiceModel
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Price = t.Price,
+                    IsOrdered = t.IsOrdered,
+                })
+                .ToList();
+
+            foreach (var topping in orderProduct.Toppings)
+            {
+                if (selectedToppings.Any(t => t.Name == topping.Name))
+                {
+                    var toppingToRemove = selectedToppings.FirstOrDefault(t => t.Name == topping.Name);
+                    selectedToppings.Remove(toppingToRemove);
+                }
+            }
+
             this.basketService.Edit(id,
+                orderProduct.ProductId,
                 modelProduct.Comment,
                 modelProduct.PizzaSizeId,
                 modelProduct.Quantity,
-                modelProduct.Price,
-                modelProduct.Toppings);
+                orderProduct.Price,
+                selectedToppings);
 
             return RedirectToAction(nameof(Index));
         }

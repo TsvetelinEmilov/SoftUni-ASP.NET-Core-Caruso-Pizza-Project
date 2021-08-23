@@ -28,6 +28,8 @@
         [MaxLength(CommentMaxLength)]
         public string Comment { get; init; }
 
+        public string UserId { get; init; }
+
         [Display(Name = "Toppings")]
         public int? ToppingId { get; init; }
 

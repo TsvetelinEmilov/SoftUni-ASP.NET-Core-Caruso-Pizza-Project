@@ -33,5 +33,43 @@
             })
             .ToList();
 
+        public OrderProductServiceModel FindById(int id)
+            => this.data.OrderProducts
+            .Where(op => op.Id == id)
+            .Select(p => new OrderProductServiceModel
+            {
+                ProductId = p.ProductId,
+                Price = p.Price,
+                PizzaSizeId = p.PizzaSizeId,
+                Comment = p.Comment,
+                Quantity = p.Quantity,
+                UserId = p.UserId,
+                Toppings = p.Toppings.Select(t => new ToppingServiceModel
+                {
+                    Id = t.Topping.Id,
+                    Name = t.Topping.Name,
+                    Price = t.Topping.Price,
+                    IsOrdered = t.Topping.IsOrdered
+                })
+            })
+            .FirstOrDefault();
+
+        public bool Remove(int productId, string userId)
+        {
+            var productToRemove = this.data
+               .OrderProducts
+               .Where(p => p.Id == productId && p.UserId == userId)
+               .FirstOrDefault();
+
+            if (productToRemove == null)
+            {
+                return false;
+            }
+
+            this.data.OrderProducts.Remove(productToRemove);
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }
