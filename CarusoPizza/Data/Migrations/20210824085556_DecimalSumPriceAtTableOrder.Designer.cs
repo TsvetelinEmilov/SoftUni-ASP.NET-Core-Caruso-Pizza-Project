@@ -4,14 +4,16 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210824085556_DecimalSumPriceAtTableOrder")]
+    partial class DecimalSumPriceAtTableOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,44 +45,11 @@ namespace CarusoPizza.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("District")
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("StreetAndNumber")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
 
                     b.Property<decimal>("SumPrice")
                         .HasColumnType("decimal(18,2)");
@@ -134,31 +103,22 @@ namespace CarusoPizza.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.OrderProductTopping", b =>
+            modelBuilder.Entity("CarusoPizza.Data.Models.OrderProductsToppings", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsOrdered")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderProductId")
+                    b.Property<int>("OrderProductId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("ToppingId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
-                    b.HasIndex("OrderProductId");
+                    b.HasKey("OrderProductId", "ToppingId");
 
-                    b.ToTable("OrderProductToppings");
+                    b.HasIndex("ToppingId");
+
+                    b.ToTable("OrderProductsToppings");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.PizzaSize", b =>
@@ -478,14 +438,23 @@ namespace CarusoPizza.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.OrderProductTopping", b =>
+            modelBuilder.Entity("CarusoPizza.Data.Models.OrderProductsToppings", b =>
                 {
-                    b.HasOne("CarusoPizza.Data.Models.OrderProduct", "OrderProduct")
-                        .WithMany("OrderProductToppings")
+                    b.HasOne("CarusoPizza.Data.Models.OrderProduct", "Product")
+                        .WithMany("Toppings")
                         .HasForeignKey("OrderProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("OrderProduct");
+                    b.HasOne("CarusoPizza.Data.Models.Topping", "Topping")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ToppingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Topping");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.Product", b =>
@@ -562,10 +531,15 @@ namespace CarusoPizza.Migrations
 
             modelBuilder.Entity("CarusoPizza.Data.Models.OrderProduct", b =>
                 {
-                    b.Navigation("OrderProductToppings");
+                    b.Navigation("Toppings");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.PizzaSize", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("CarusoPizza.Data.Models.Topping", b =>
                 {
                     b.Navigation("OrderProducts");
                 });

@@ -27,7 +27,7 @@
                 <div class="form-group">
                     <h4 class="heading-margin">AddOns</h4>
                         <table>
-                            @for (int i = 0; i < Model.Toppings.Count(); i++)
+                            @for (int i = 0; i < Model.OrderProductToppings.Count(); i++)
                             {
                                 @if (i % 4 == 0)
                                 {
@@ -35,12 +35,12 @@
                                     <tr></tr>
                                 }
                                 <td>
-                                    @Html.CheckBoxFor(model => model.Toppings[i].IsOrdered,
+                                    @Html.CheckBoxFor(model => model.OrderProductToppings[i].IsOrdered,
                                                       new { @class = "custom-checkbox" })
-                                    <label>@Model.Toppings[i].Name - @Model.Toppings[i].Price lv.</label>
-                                    @Html.HiddenFor(model => model.Toppings[i].Id)
-                                    @Html.HiddenFor(model => model.Toppings[i].Name)
-                                    @Html.HiddenFor(model => model.Toppings[i].Price)
+                                    <label>@Model.OrderProductToppings[i].Name - @Model.OrderProductToppings[i].Price lv.</label>
+                                    @Html.HiddenFor(model => model.OrderProductToppings[i].Id)
+                                    @Html.HiddenFor(model => model.OrderProductToppings[i].Name)
+                                    @Html.HiddenFor(model => model.OrderProductToppings[i].Price)
                                 </td>
                             }
                         </table>

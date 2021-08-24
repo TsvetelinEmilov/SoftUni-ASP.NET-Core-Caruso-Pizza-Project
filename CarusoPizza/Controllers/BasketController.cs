@@ -43,7 +43,7 @@
 
             query.Products = this.data
                 .OrderProducts
-                .Where(u => u.UserId == userId)
+                .Where(u => u.UserId == userId && u.IsOrdered == false)
                 .Select(p => new BasketProductViewModel
                 {
                     Id = p.Id,
@@ -56,13 +56,14 @@
                     Comment = p.Comment,
                     Quantity = p.Quantity,
                     UserId = p.UserId,
-                    Toppings = p.Toppings
+                    OrderProductToppings = p.OrderProductToppings
                     .Select(t => new SelectedToppingsViewModel
                     {
-                        Id = t.ToppingId,
-                        Name = t.Topping.Name,
-                        Price = t.Topping.Price
-
+                        Id = t.Id,
+                        Name = t.Name,
+                        Price = t.Price,
+                        IsOrdered = t.IsOrdered,
+                        OrderProductId = t.OrderProductId.Value
                     })
                 })
                 .ToList();
@@ -101,7 +102,7 @@
             return View(new ToBasketFormModel
             {
                 PizzaSizes = this.orderProductService.PizzaSizes(),
-                Toppings = this.orderProductService.ProductsToppings(),
+                OrderProductToppings = this.orderProductService.ProductsToppings(),
                 Product = product,
                 PizzaSizeId = orderProduct.PizzaSizeId,
                 Price = orderProduct.Price,
@@ -117,7 +118,7 @@
          {
             if (!ModelState.IsValid)
             {
-                modelProduct.Toppings = this.orderProductService.ProductsToppings();
+                modelProduct.OrderProductToppings = this.orderProductService.ProductsToppings();
                 modelProduct.PizzaSizes = this.orderProductService.PizzaSizes();
 
                 return this.View(modelProduct);
@@ -131,7 +132,7 @@
             }
 
             var selectedToppings = modelProduct
-                .Toppings
+                .OrderProductToppings
                 .Where(x => x.IsOrdered == true)
                 .Select(t => new ToppingServiceModel
                 {
@@ -139,6 +140,7 @@
                     Name = t.Name,
                     Price = t.Price,
                     IsOrdered = t.IsOrdered,
+                    OrderProductId = t.OrderProductId
                 })
                 .ToList();
 
@@ -161,6 +163,6 @@
 
             return RedirectToAction(nameof(Index));
         }
-
+        
     }
 }

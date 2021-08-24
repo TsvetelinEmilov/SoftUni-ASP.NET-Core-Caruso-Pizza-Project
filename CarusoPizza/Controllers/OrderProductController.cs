@@ -45,7 +45,7 @@
             return View(new ToBasketFormModel
             {
                 PizzaSizes = this.orderProductService.PizzaSizes(),
-                Toppings = this.orderProductService.ProductsToppings(),
+                OrderProductToppings = this.orderProductService.ProductsToppings(),
                 Product = new ProductServiceModel
                 {
                     Id = product.Id,
@@ -66,7 +66,7 @@
             var product = this.productService.FindById(id);
 
             var selectedToppings = productDetails
-                .Toppings
+                .OrderProductToppings
                 .Where(x => x.IsOrdered == true)
                 .Select(t => new ToppingServiceModel
                 {
@@ -89,7 +89,7 @@
 
             if (!ModelState.IsValid)
             {
-                productDetails.Toppings = this.orderProductService.ProductsToppings();
+                productDetails.OrderProductToppings = this.orderProductService.ProductsToppings();
                 productDetails.PizzaSizes = this.orderProductService.PizzaSizes();
 
                 return this.View(productDetails);
@@ -120,19 +120,22 @@
                 PizzaSizeId = productDetails.PizzaSizeId,
                 Quantity = productDetails.Quantity,
                 Price = productPrice,
-                UserId = userId
+                UserId = userId,
+                IsOrdered = false
             };
 
             foreach (var topping in selectedToppings)
             {
-                var orderProductToppings = new OrderProductsToppings
+                var toppingData = new OrderProductTopping
                 {
-                    OrderProductId = productDetails.Id,
-                    ToppingId = topping.Id,
+                    Name = topping.Name,
+                    IsOrdered = topping.IsOrdered,
+                    Price = topping.Price,
+                    OrderProductId = productDetails.Id
                 };
-                orderProductData.Toppings.Add(orderProductToppings);
-            }
 
+                orderProductData.OrderProductToppings.Add(toppingData);
+            }
 
             this.data.OrderProducts.Add(orderProductData);
             this.data.SaveChanges();

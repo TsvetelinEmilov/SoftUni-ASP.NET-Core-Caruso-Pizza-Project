@@ -1,0 +1,65 @@
+﻿@model OrderFormModel
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <h2 class="heading-margin text-center">Checkout</h2>
+
+        <form method="post" class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" class="form-control" placeholder="Type your first and last name">
+                <span asp-validation-for="FullName" class="small text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control">
+                <span asp-validation-for="Email" class="small text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="PhoneNumber"></label>
+                <input asp-for="PhoneNumber" class="form-control" placeholder="Type your phone number">
+                <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="StreetAndNumber"></label>
+                <input asp-for="StreetAndNumber" class="form-control" placeholder="Type street name and number">
+                <span asp-validation-for="StreetAndNumber" class="small text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="City"></label>
+                <input asp-for="City" class="form-control" placeholder="Type your city">
+                <span asp-validation-for="City" class="small text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="District"></label>
+                <input asp-for="District" class="form-control" placeholder="Type your district">
+                <span asp-validation-for="District" class="small text-danger"></span>
+            </div>
+            <div class="col-12">
+                <label asp-for="Note"></label>
+                <input asp-for="Note" class="form-control" placeholder="ie: Call on arrival">
+                <span asp-validation-for="Note" class="small text-danger"></span>
+            </div>
+
+            <h3 class="heading-margin text-center">Products summary</h3>
+            @foreach (var orderProduct in Model.Products)
+            {
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@orderProduct.Quantity x @orderProduct.Name - @orderProduct.Price lv.</h5>
+                            @foreach (var topping in orderProduct.Toppings)
+                            {
+                                <p class="card-text">- @topping.Name</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-12">
+                <input class="btn btn-primary mt-4" type="submit" value="Order - @Model.SumPrice lv." />
+            </div>
+
+        </form>
+    </div>
+</div>

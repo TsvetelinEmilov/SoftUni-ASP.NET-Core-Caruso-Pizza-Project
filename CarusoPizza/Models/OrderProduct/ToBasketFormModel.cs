@@ -33,6 +33,6 @@
         [Display(Name = "Toppings")]
         public int? ToppingId { get; init; }
 
-        public IList<ToppingServiceModel> Toppings { get; set; }
+        public IList<ToppingServiceModel> OrderProductToppings { get; set; }
     }
 }

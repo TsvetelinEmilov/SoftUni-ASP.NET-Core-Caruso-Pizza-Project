@@ -10,11 +10,8 @@
     {
         private readonly IProductService products;
 
-        public ProductsController(
-            IProductService products)
-        {
-            this.products = products;
-        }
+        public ProductsController(IProductService products) 
+            => this.products = products;
 
         [Authorize]
         public IActionResult Add()

@@ -39,17 +39,19 @@
             .Select(p => new OrderProductServiceModel
             {
                 ProductId = p.ProductId,
+                Name = p.Product.Name,
                 Price = p.Price,
                 PizzaSizeId = p.PizzaSizeId,
                 Comment = p.Comment,
                 Quantity = p.Quantity,
                 UserId = p.UserId,
-                Toppings = p.Toppings.Select(t => new ToppingServiceModel
+                Toppings = p.OrderProductToppings.Select(t => new ToppingServiceModel
                 {
-                    Id = t.Topping.Id,
-                    Name = t.Topping.Name,
-                    Price = t.Topping.Price,
-                    IsOrdered = t.Topping.IsOrdered
+                    Id = t.Id,
+                    Name = t.Name,
+                    Price = t.Price,
+                    IsOrdered = t.IsOrdered,
+                    OrderProductId = t.OrderProductId.Value
                 })
             })
             .FirstOrDefault();

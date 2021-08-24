@@ -21,9 +21,9 @@
 
         public DbSet<OrderProduct> OrderProducts { get; init; }
 
-        public DbSet<Order> Orders { get; init; }
+        public DbSet<OrderProductTopping> OrderProductToppings { get; init; }
 
-        public DbSet<Basket> Baskets { get; init; }
+        public DbSet<Order> Orders { get; init; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -50,16 +50,12 @@
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Entity<OrderProductsToppings>().HasKey(x => new
-                {
-                    x.OrderProductId,
-                    x.ToppingId
-                });
+                .Entity<OrderProductTopping>()
+                .HasOne(op => op.OrderProduct)
+                .WithMany(t => t.OrderProductToppings)
+                .HasForeignKey(op => op.OrderProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<Order>()
-            .HasOne(b => b.Basket)
-            .WithOne(o => o.Order)
-            .HasForeignKey<Basket>(o => o.OrderId);
 
             base.OnModelCreating(builder);
         }

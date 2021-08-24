@@ -22,13 +22,11 @@
 
         public string Comment { get; set; }
 
-        public int? BasketId { get; set; }
-
-        public Basket Basket { get; init; }
-
         public string UserId { get; init; }
 
-        public List<OrderProductsToppings> Toppings { get; set; } = new List<OrderProductsToppings>();
+        public bool IsOrdered { get; set; }
+
+        public List<OrderProductTopping> OrderProductToppings { get; set; } = new List<OrderProductTopping>();
 
     }
 }

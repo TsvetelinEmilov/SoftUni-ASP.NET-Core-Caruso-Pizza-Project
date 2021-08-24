@@ -4,14 +4,16 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210824142505_OrderProductToppingTableAndManyToManyRelationshipRemoved")]
+    partial class OrderProductToppingTableAndManyToManyRelationshipRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,33 +136,6 @@ namespace CarusoPizza.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.OrderProductTopping", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("IsOrdered")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("OrderProductId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderProductId");
-
-                    b.ToTable("OrderProductToppings");
-                });
-
             modelBuilder.Entity("CarusoPizza.Data.Models.PizzaSize", b =>
                 {
                     b.Property<int>("Id")
@@ -229,10 +204,15 @@ namespace CarusoPizza.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
+                    b.Property<int?>("OrderProductId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderProductId");
 
                     b.ToTable("Toppings");
                 });
@@ -478,16 +458,6 @@ namespace CarusoPizza.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("CarusoPizza.Data.Models.OrderProductTopping", b =>
-                {
-                    b.HasOne("CarusoPizza.Data.Models.OrderProduct", "OrderProduct")
-                        .WithMany("OrderProductToppings")
-                        .HasForeignKey("OrderProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("OrderProduct");
-                });
-
             modelBuilder.Entity("CarusoPizza.Data.Models.Product", b =>
                 {
                     b.HasOne("CarusoPizza.Data.Models.Category", "Category")
@@ -497,6 +467,16 @@ namespace CarusoPizza.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("CarusoPizza.Data.Models.Topping", b =>
+                {
+                    b.HasOne("CarusoPizza.Data.Models.OrderProduct", "OrderProduct")
+                        .WithMany("Toppings")
+                        .HasForeignKey("OrderProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("OrderProduct");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -562,7 +542,7 @@ namespace CarusoPizza.Migrations
 
             modelBuilder.Entity("CarusoPizza.Data.Models.OrderProduct", b =>
                 {
-                    b.Navigation("OrderProductToppings");
+                    b.Navigation("Toppings");
                 });
 
             modelBuilder.Entity("CarusoPizza.Data.Models.PizzaSize", b =>

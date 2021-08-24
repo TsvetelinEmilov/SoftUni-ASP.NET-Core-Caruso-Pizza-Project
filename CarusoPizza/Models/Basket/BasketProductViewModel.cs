@@ -26,7 +26,7 @@
 
         public string UserId { get; init; }
 
-        public IEnumerable<SelectedToppingsViewModel> Toppings { get; init; }
+        public IEnumerable<SelectedToppingsViewModel> OrderProductToppings { get; init; }
 
     }
 }

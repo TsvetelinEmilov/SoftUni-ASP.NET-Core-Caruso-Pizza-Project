@@ -53,16 +53,14 @@
             foreach (var topping in toppings)
             {
                 
-                var orderProductToppings = new OrderProductsToppings
+                var orderProductToppings = new OrderProductTopping
                 {
-                    OrderProductId = id,
-                    ToppingId = topping.Id,
-                };
-                if (orderProduct.Toppings.Contains(orderProductToppings))
-                {
-
-                }
-                orderProduct.Toppings.Add(orderProductToppings);
+                    Name = topping.Name,
+                    Price = topping.Price,
+                    IsOrdered = topping.IsOrdered,
+                    OrderProductId = id
+                 };
+                orderProduct.OrderProductToppings.Add(orderProductToppings);
             }
 
             this.data.SaveChanges();

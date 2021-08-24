@@ -3,6 +3,9 @@
 @{
     ViewBag.Title = "Basket";
 }
+@{ 
+    decimal sumPrice = 0;
+}
 @if (Model.Products.Count() == 0)
 {
     <h3 class="text-center">Your Basket is empty.</h3>
@@ -12,6 +15,8 @@ else
 {
     @foreach (var product in Model.Products)
     {
+        sumPrice = sumPrice + product.Price;
+
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
             <div class="col-md-4">
@@ -21,7 +26,7 @@ else
                 <div class="card-body">
                     <h5 class="card-title">@product.Quantity x @product.ProductName - @product.Price lv.</h5>
                     <p class="card-text">@product.ProductDescription</p>
-                    @foreach (var topping in product.Toppings)
+                    @foreach (var topping in product.OrderProductToppings)
                     {
                         <p class="card-text"><small class="text-muted">- @topping.Name</small></p>
                     }
@@ -33,7 +38,8 @@ else
         </div>
     </div>
     }
+    <h5 class="card-title">Summary price: @sumPrice lv.</h5>
     <a asp-controller="Products" asp-action="All" class="btn btn-link">Back to Menu</a>
-    <a asp-controller="Basket" asp-action="Finish" class="btn btn-primary">Finish Order</a>
+    <a asp-controller="Orders" asp-action="Finish" asp-route-userId="@User.GetId()" class="btn btn-primary">Finish Order</a>
 }
 

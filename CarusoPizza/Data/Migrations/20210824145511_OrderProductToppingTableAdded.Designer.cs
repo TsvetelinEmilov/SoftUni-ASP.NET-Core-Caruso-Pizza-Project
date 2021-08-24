@@ -4,14 +4,16 @@ using CarusoPizza.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CarusoPizza.Migrations
 {
     [DbContext(typeof(CarusoPizzaDbContext))]
-    partial class CarusoPizzaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210824145511_OrderProductToppingTableAdded")]
+    partial class OrderProductToppingTableAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -483,7 +485,7 @@ namespace CarusoPizza.Migrations
                     b.HasOne("CarusoPizza.Data.Models.OrderProduct", "OrderProduct")
                         .WithMany("OrderProductToppings")
                         .HasForeignKey("OrderProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("OrderProduct");
                 });
