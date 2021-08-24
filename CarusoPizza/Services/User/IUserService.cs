@@ -4,6 +4,6 @@
 
     public interface IUserService
     {
-        OrdersQueryServiceModel GetOrders(string userId);
+        UsersOrdersQueryServiceModel GetOrders(string userId);
     }
 }

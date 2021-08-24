@@ -32,7 +32,7 @@
             this.basketService = basketService;
         }
         [Authorize]
-        public IActionResult Index(AllBasketProductsFormModel query)
+        public IActionResult Index(AllBasketProductsListingModel basket)
         {
             var userId = User.GetId();
 
@@ -41,7 +41,7 @@
                 return Redirect("~/Identity/Account/Login");
             }
 
-            query.Products = this.data
+            basket.Products = this.data
                 .OrderProducts
                 .Where(u => u.UserId == userId && u.IsOrdered == false)
                 .Select(p => new BasketProductViewModel
@@ -68,7 +68,7 @@
                 })
                 .ToList();
 
-            return View(query);
+            return View(basket);
         }
         [Authorize]
         public IActionResult Remove(int productId, string userId)

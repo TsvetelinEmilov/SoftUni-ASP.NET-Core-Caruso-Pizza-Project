@@ -1,7 +1,7 @@
-﻿@model AllUsersOrdersQueryModel
+﻿@model AllOrdersQueryModel
 
 @{
-    ViewBag.Title = "Orders";
+    ViewBag.Title = "All Orders";
 }
 
 @foreach (var order in Model.Orders)
@@ -11,6 +11,7 @@
         <div class="card-body">
             <h5 class="card-title">Products: @order.ProductsCount</h5>
             <p class="card-text">Price: @order.SumPrice lv.</p>
+            <a class="btn btn-outline-info" asp-area="" asp-controller="Administrator" asp-action="Details" asp-route-orderId="@order.OrderId">Details</a>
         </div>
     </div>
 }

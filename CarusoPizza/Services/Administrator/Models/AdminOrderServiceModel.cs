@@ -1,7 +1,9 @@
-﻿namespace CarusoPizza.Services.User.Models
+﻿namespace CarusoPizza.Services.Administrator.Models
 {
-    public class OrderServiceModel
+    public class AdminOrderServiceModel
     {
+        public int OrderId { get; init; }
+
         public string CreatedOn { get; init; }
 
         public int ProductsCount { get; init; }

@@ -12,7 +12,7 @@
         public UserService(CarusoPizzaDbContext data) 
             => this.data = data;
 
-        public OrdersQueryServiceModel GetOrders(string userId)
+        public UsersOrdersQueryServiceModel GetOrders(string userId)
         {
             var orderQuery = this.data
                 .Orders
@@ -20,18 +20,17 @@
                 .AsQueryable();
 
             var orders = orderQuery
-                .OrderBy(x => x.CreatedOn)
-                .Select(o => new OrderServiceModel
+                .OrderByDescending(x => x.CreatedOn)
+                .Select(o => new UserOrderServiceModel
                 {
                     CreatedOn = o.CreatedOn.ToString("yyyy-MM-dd HH':'mm':'ss"),
                     ProductsCount = o.Products.Count(),
                     SumPrice = o.SumPrice
                 });
-            return new OrdersQueryServiceModel
+            return new UsersOrdersQueryServiceModel
             {
                 Orders = orders
-            };
-                
+            };        
         }
     }
 }

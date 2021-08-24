@@ -1,4 +1,4 @@
-﻿@model AllBasketProductsFormModel
+﻿@model AllBasketProductsListingModel
 
 @{
     ViewBag.Title = "Basket";
@@ -38,7 +38,7 @@ else
         </div>
     </div>
     }
-    <h5 class="card-title">Summary price: @sumPrice lv.</h5>
+    <h5 class="card-title">Total price: @sumPrice lv.</h5>
     <a asp-controller="Products" asp-action="All" class="btn btn-link">Back to Menu</a>
     <a asp-controller="Orders" asp-action="Finish" asp-route-userId="@User.GetId()" class="btn btn-primary">Finish Order</a>
 }

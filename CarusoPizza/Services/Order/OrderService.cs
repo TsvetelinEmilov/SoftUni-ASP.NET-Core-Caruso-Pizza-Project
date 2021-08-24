@@ -28,28 +28,13 @@
         {
             var orderProductDataColletion = new List<OrderProduct>();
 
-            var toppingsDataCollection = new List<OrderProductTopping>();
-
             foreach (var orderProduct in orderProducts)
             {
-                var toppingData = new OrderProductTopping();
                 List<OrderProduct> orderProductData = this.data.OrderProducts.Where(op => op.Id == orderProduct.Id).ToList();
-
-                foreach (var topping in orderProduct.Toppings)
-                {
-                    toppingData = new OrderProductTopping
-                    {
-                        Name = topping.Name,
-                        Price = topping.Price,
-                        IsOrdered = topping.IsOrdered
-                    };
-                    toppingsDataCollection.Add(toppingData);
-                }
 
                 foreach (var product in orderProductData)
                 {
                     product.IsOrdered = true;
-                    product.OrderProductToppings = toppingsDataCollection.ToList();
                 }
                 orderProductDataColletion.AddRange(orderProductData);
                 

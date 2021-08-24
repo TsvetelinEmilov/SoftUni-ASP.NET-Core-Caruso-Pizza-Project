@@ -3,9 +3,9 @@
     using CarusoPizza.Services.User.Models;
     using System.Collections.Generic;
 
-    public class AllOrdersQueryModel
+    public class AllUsersOrdersQueryModel
     {
-        public IEnumerable<OrderServiceModel> Orders { get; set; }
+        public IEnumerable<UserOrderServiceModel> Orders { get; set; }
 
     }
 }

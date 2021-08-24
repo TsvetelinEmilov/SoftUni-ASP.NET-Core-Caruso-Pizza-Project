@@ -3,6 +3,7 @@ namespace CarusoPizza
     using CarusoPizza.Data;
     using CarusoPizza.Data.Models;
     using CarusoPizza.Infrastructure;
+    using CarusoPizza.Services.Administrator;
     using CarusoPizza.Services.Basket;
     using CarusoPizza.Services.Order;
     using CarusoPizza.Services.OrderProduct;
@@ -56,6 +57,7 @@ namespace CarusoPizza
             services.AddTransient<IBasketService, BasketService>();
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAdministratorService, AdministratorService>();
 
             services.AddApplicationInsightsTelemetry();
         }

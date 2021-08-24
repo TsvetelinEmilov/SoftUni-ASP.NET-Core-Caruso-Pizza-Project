@@ -14,7 +14,7 @@
             => this.userService = userService;
 
         [Authorize]
-        public IActionResult Orders(string userId, [FromQuery] AllOrdersQueryModel query)
+        public IActionResult Orders(string userId, [FromQuery] AllUsersOrdersQueryModel query)
         {
             if (User.GetId() != userId)
             {

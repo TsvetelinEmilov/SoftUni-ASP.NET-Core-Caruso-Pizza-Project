@@ -2,10 +2,9 @@
 {
     using System.Collections.Generic;
 
-    public class AllBasketProductsFormModel
+    public class AllBasketProductsListingModel
     {
         public IEnumerable<BasketProductViewModel> Products { get; set; }
 
-        public decimal SumPrice { get; set; }
     }
 }
