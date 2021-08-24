@@ -28,6 +28,7 @@ namespace CarusoPizza.Services.Administrator
                 City = o.City,
                 District = o.District,
                 Note = o.Note,
+                Review = o.Review,
                 Products = o.Products.Select(p => new BasketProductViewModel
                 {
                     Id = p.Id,
@@ -60,7 +61,7 @@ namespace CarusoPizza.Services.Administrator
                 .AsQueryable();
 
             var orders = orderQuery
-                .OrderBy(x => x.CreatedOn)
+                .OrderByDescending(x => x.CreatedOn)
                 .Select(o => new AdminOrderServiceModel
                 {
                     OrderId = o.Id,

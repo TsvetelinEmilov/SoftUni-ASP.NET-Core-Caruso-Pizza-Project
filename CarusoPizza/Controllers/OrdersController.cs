@@ -1,10 +1,8 @@
 ﻿namespace CarusoPizza.Controllers
 {
     using CarusoPizza.Data;
-    using CarusoPizza.Data.Models;
     using Microsoft.AspNetCore.Mvc;
     using System.Linq;
-    using System;
     using CarusoPizza.Services.Order;
     using CarusoPizza.Infrastructure;
     using CarusoPizza.Models.Order;
@@ -12,16 +10,10 @@
 
     public class OrdersController : Controller
     {
-        private readonly CarusoPizzaDbContext data;
         private readonly IOrderService orderService;
 
-        public OrdersController(
-            CarusoPizzaDbContext data,
-            IOrderService orderService)
-        {
-            this.data = data;
-            this.orderService = orderService;
-        }
+        public OrdersController(IOrderService orderService) 
+            => this.orderService = orderService;
         [Authorize]
         public IActionResult Finish(string userId)
         {

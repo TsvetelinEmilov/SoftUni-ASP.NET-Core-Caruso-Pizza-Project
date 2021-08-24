@@ -1,9 +1,10 @@
 ﻿namespace CarusoPizza.Models.Home
 {
+    using CarusoPizza.Services.Home.Models;
     using System.Collections.Generic;
 
     public class IndexViewModel
     {
-        public List<ProductIndexViewModel> Products { get; set; }
+        public List<ProductIndexServiceModel> Products { get; set; }
     }
 }

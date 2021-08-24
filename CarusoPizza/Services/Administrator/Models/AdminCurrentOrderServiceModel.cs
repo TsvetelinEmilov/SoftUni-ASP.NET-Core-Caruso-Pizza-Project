@@ -25,6 +25,8 @@
 
         public string Note { get; init; }
 
+        public string Review { get; init; }
+
         public IEnumerable<BasketProductViewModel> Products { get; set; }
     }
 }

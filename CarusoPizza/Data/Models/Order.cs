@@ -46,6 +46,9 @@
         [MaxLength(NoteMaxLength)]
         public string Note { get; init; }
 
+        [MaxLength(ReviewMaxLength)]
+        public string Review { get; set; }
+
         public IEnumerable<OrderProduct> Products { get; set; }
     }
 }

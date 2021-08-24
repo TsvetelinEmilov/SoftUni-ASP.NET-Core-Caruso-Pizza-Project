@@ -69,6 +69,10 @@
 
             public const int NoteMinLength = 1;
             public const int NoteMaxLength = 100;
+
+            public const int ReviewMinLength = 5;
+            public const int ReviewMaxLength = 100;
+
         }
 
     }

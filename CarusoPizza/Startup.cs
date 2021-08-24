@@ -5,6 +5,7 @@ namespace CarusoPizza
     using CarusoPizza.Infrastructure;
     using CarusoPizza.Services.Administrator;
     using CarusoPizza.Services.Basket;
+    using CarusoPizza.Services.Home;
     using CarusoPizza.Services.Order;
     using CarusoPizza.Services.OrderProduct;
     using CarusoPizza.Services.Products;
@@ -58,6 +59,7 @@ namespace CarusoPizza
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdministratorService, AdministratorService>();
+            services.AddTransient<IHomeService, HomeService>();
 
             services.AddApplicationInsightsTelemetry();
         }

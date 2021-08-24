@@ -3,14 +3,23 @@
 @{
     ViewBag.Title = "Orders";
 }
-
-@foreach (var order in Model.Orders)
+@if (!Model.Orders.Any())
+{
+    <h3 class="text-center">You don`t have any orders.</h3>
+    <a class="btn btn-primary" role="button" asp-controller="Products" asp-action="All">Go make one!</a>
+}
+else
+{ 
+    @foreach (var order in Model.Orders)
 {
     <div class="card">
         <h5 class="card-header">@order.CreatedOn</h5>
         <div class="card-body">
             <h5 class="card-title">Products: @order.ProductsCount</h5>
             <p class="card-text">Price: @order.SumPrice lv.</p>
+            <a class="btn btn-outline-info" asp-area="" asp-controller="User" asp-action="Details" asp-route-orderId="@order.OrderId" asp-route-userId="@User.GetId()">Details</a>
+            <a class="btn btn-info" asp-area="" asp-controller="User" asp-action="Review" asp-route-orderId="@order.OrderId" asp-route-userId="@User.GetId()">Add Review</a>
         </div>
     </div>
+}
 }

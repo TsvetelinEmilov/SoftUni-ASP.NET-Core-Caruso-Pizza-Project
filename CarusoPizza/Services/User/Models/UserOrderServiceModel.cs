@@ -2,6 +2,8 @@
 {
     public class UserOrderServiceModel
     {
+        public int OrderId { get; init; }
+
         public string CreatedOn { get; init; }
 
         public int ProductsCount { get; init; }

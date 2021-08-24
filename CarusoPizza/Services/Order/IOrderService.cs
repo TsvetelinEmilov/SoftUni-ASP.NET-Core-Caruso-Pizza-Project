@@ -7,14 +7,6 @@
     {
         IEnumerable<OrderProductServiceModel> OrderProductsByUser(string userId);
 
-        //SumPrice
-        //CreatorPhoneNumber
-        //CreatorFullName
-        //CreatorEmail
-        //CreatorCity
-        //CreatorDistrict
-        //CreatorStreetAndNumber
-        //CreatorNote
         public int CreateOrder(
             decimal sumPrice,
             string phoneNumber,
@@ -26,5 +18,7 @@
             string note,
             IEnumerable<OrderProductServiceModel> orderProducts,
             string userId);
+
+        bool AddReview(int orderId, string review);
     }
 }

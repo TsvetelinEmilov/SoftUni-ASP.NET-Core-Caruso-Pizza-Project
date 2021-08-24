@@ -23,6 +23,7 @@
                 .OrderByDescending(x => x.CreatedOn)
                 .Select(o => new UserOrderServiceModel
                 {
+                    OrderId = o.Id,
                     CreatedOn = o.CreatedOn.ToString("yyyy-MM-dd HH':'mm':'ss"),
                     ProductsCount = o.Products.Count(),
                     SumPrice = o.SumPrice

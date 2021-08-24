@@ -49,6 +49,7 @@
                 City = order.City,
                 District = order.District,
                 Note = order.Note,
+                Review = order.Review,
                 Products = order.Products
             });
         }

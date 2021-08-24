@@ -61,6 +61,22 @@
             return orderData.Id;
         }
 
+        public bool AddReview(int orderId, string review)
+        {
+            var order = this.data.Orders.FirstOrDefault(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return false;
+            }
+
+            order.Review = review;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public IEnumerable<OrderProductServiceModel> OrderProductsByUser(string userId)
             => this.data
             .OrderProducts

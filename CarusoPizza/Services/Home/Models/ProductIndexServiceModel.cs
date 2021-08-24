@@ -1,6 +1,11 @@
-﻿namespace CarusoPizza.Models.Home
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CarusoPizza.Services.Home.Models
 {
-    public class ProductIndexViewModel
+    public class ProductIndexServiceModel
     {
         public int Id { get; init; }
 
